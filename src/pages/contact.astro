@@ -1,0 +1,25 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SEO from "../components/SEO.astro";
+// Configure your contact email/form endpoint here rather than hardcoding
+// it in multiple places.
+const CONTACT_EMAIL = "hello@example.com";
+---
+<BaseLayout>
+  <SEO slot="head" title="Contact | Embedded & Circuits" description="Get in touch." path="/contact/" />
+  <div class="prose-container article-body" style="padding: var(--space-8) 0;">
+    <h1>Contact</h1>
+    <p>
+      Found a mistake in an article, want to suggest a topic, or just want to
+      talk electronics? Reach me at
+      <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+    </p>
+    <p class="text-muted" style="font-size:0.9rem;">
+      This is a static site with no backend, so this page links directly to
+      email rather than submitting a form. If you'd like a real contact form
+      later, a service like Cloudflare Pages Forms, Formspree, or a small
+      Cloudflare Worker can be added here without changing the rest of the
+      site's architecture.
+    </p>
+  </div>
+</BaseLayout>

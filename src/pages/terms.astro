@@ -1,0 +1,47 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SEO from "../components/SEO.astro";
+const LAST_UPDATED = "2026-09-21";
+---
+<BaseLayout>
+  <SEO slot="head" title="Terms & Disclaimer | Embedded & Circuits" description="Terms of use and content disclaimer." path="/terms/" />
+  <div class="prose-container article-body" style="padding: var(--space-8) 0;">
+    <h1>Terms &amp; Disclaimer</h1>
+    <p class="text-muted">Last updated: {LAST_UPDATED}</p>
+
+    <p><strong>This is a template, not legal advice.</strong> Adjust it to fit your situation.</p>
+
+    <h2>Content disclaimer</h2>
+    <p>
+      Articles on this site cover electronics and embedded-systems projects
+      involving live circuits, power sources, and microcontrollers. Content is
+      provided for educational purposes only, "as is," without warranty of
+      any kind. Building or wiring circuits carries inherent risk of damage
+      to equipment, fire, or injury. Follow all safety guidance for the
+      components you use, and work at your own risk.
+    </p>
+
+    <h2>No professional advice</h2>
+    <p>
+      Nothing on this site constitutes professional engineering, electrical,
+      or safety advice. For commercial or safety-critical projects, consult a
+      qualified engineer.
+    </p>
+
+    <h2>Third-party content and links</h2>
+    <p>
+      This site may link to third-party sites, datasheets, or products. I am
+      not responsible for the content or availability of external sites.
+    </p>
+
+    <h2>Intellectual property</h2>
+    <p>
+      Unless otherwise noted, article text and original images are © the
+      author. Code samples in articles may be reused freely unless a specific
+      license is noted in that article.
+    </p>
+
+    <h2>Changes</h2>
+    <p>These terms may be updated as the site evolves; the "last updated" date above will reflect the latest revision.</p>
+  </div>
+</BaseLayout>

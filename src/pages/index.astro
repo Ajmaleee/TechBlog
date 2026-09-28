@@ -1,0 +1,52 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SEO from "../components/SEO.astro";
+import PostCard from "../components/PostCard.astro";
+import { getPublishedPosts, getAllCategories, slugify } from "../utils/posts";
+
+const posts = await getPublishedPosts();
+const latest = posts.slice(0, 6);
+const categories = getAllCategories(posts);
+---
+<BaseLayout>
+  <SEO
+    slot="head"
+    title="Embedded & Circuits — Arduino, ESP32 & Electronics Tutorials"
+    description="A personal engineering blog covering Arduino, ESP32, sensors, embedded systems, and IoT — practical tutorials, wiring guides, and project documentation."
+    path="/"
+  />
+
+  <section class="container" style="padding: var(--space-12) 0 var(--space-8);">
+    <div style="max-width: 40rem;">
+      <h1>Embedded &amp; Circuits</h1>
+      <p class="text-muted" style="font-size:1.125rem;">
+        Practical, no-nonsense tutorials on Arduino, ESP32, sensors, and embedded
+        systems — written from the bench, not the marketing copy. I document what
+        actually worked, what didn't, and why.
+      </p>
+      <div style="display:flex; gap: var(--space-3); margin-top: var(--space-6);">
+        <a class="btn" href="/blog/">Read the blog</a>
+        <a class="btn btn-secondary" href="/about/">About me</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="container">
+    <div style="display:flex; justify-content:space-between; align-items:baseline;">
+      <h2 style="margin-top:0;">Latest articles</h2>
+      <a href="/blog/">View all →</a>
+    </div>
+    <div class="post-grid">
+      {latest.map((post) => <PostCard post={post} />)}
+    </div>
+  </section>
+
+  <section class="container" style="margin-top: var(--space-12);">
+    <h2>Browse by topic</h2>
+    <div class="meta-row" style="gap: var(--space-3);">
+      {categories.map((cat) => (
+        <a class="badge" href={`/blog/category/${slugify(cat)}/`}>{cat}</a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

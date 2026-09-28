@@ -1,0 +1,8 @@
+# Optional: only needed if you deploy via `wrangler pages deploy` from the
+# CLI instead of (or in addition to) Cloudflare's native Git integration.
+# The native Git integration (recommended, see README) does not require
+# this file at all — Cloudflare reads the build command/output directory
+# from the Pages project's dashboard settings instead.
+name = "techblog"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-09-01"

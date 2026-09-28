@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SEO from "../components/SEO.astro";
+---
+<BaseLayout>
+  <SEO slot="head" title="Page Not Found | Embedded & Circuits" description="This page doesn't exist." path="/404/" noindex={true} />
+  <div class="prose-container" style="padding: var(--space-16) 0; text-align:center;">
+    <h1 style="font-size: 3rem;">404</h1>
+    <p class="text-muted">That page went missing — possibly to the same place as a loose jumper wire.</p>
+    <div style="margin-top: var(--space-6);">
+      <a class="btn" href="/">Back to home</a>
+      <a class="btn btn-secondary" href="/blog/">Browse the blog</a>
+    </div>
+  </div>
+</BaseLayout>

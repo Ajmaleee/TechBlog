@@ -1,0 +1,45 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Analytics from "../components/Analytics.astro";
+import "../styles/global.css";
+
+interface Props {
+  bodyClass?: string;
+}
+const { bodyClass = "" } = Astro.props;
+
+const adsenseClientId = import.meta.env.PUBLIC_ADSENSE_CLIENT_ID;
+const adsenseEnabled = Boolean(adsenseClientId) && import.meta.env.PUBLIC_ADSENSE_ENABLED !== "false";
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <link rel="icon" href="/favicon/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title="Embedded & Circuits RSS Feed" href="/rss.xml" />
+    <meta name="generator" content={Astro.generator} />
+    {import.meta.env.PUBLIC_GSC_VERIFICATION && (
+      <meta name="google-site-verification" content={import.meta.env.PUBLIC_GSC_VERIFICATION} />
+    )}
+    <slot name="head" />
+    {adsenseEnabled && (
+      <script
+        async
+        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClientId}`}
+        crossorigin="anonymous"
+      ></script>
+    )}
+    <Analytics />
+  </head>
+  <body class={bodyClass}>
+    <a href="#main-content" class="visually-hidden">Skip to content</a>
+    <Header />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer />
+    <script src="/scripts/code-copy.js" is:inline defer></script>
+  </body>
+</html>

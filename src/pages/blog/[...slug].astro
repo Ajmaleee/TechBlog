@@ -1,0 +1,28 @@
+---
+import { getEntry } from "astro:content";
+import ArticleLayout from "../../layouts/ArticleLayout.astro";
+import { getPublishedPosts, getRelatedPosts } from "../../utils/posts";
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts();
+  return posts.map((post, i) => ({
+    params: { slug: post.slug },
+    props: {
+      slug: post.slug,
+      prev: posts[i + 1] ?? null, // older
+      next: posts[i - 1] ?? null, // newer
+      allPosts: posts,
+    },
+  }));
+}
+
+const { slug, prev, next, allPosts } = Astro.props;
+const post = await getEntry("blog", slug);
+if (!post) return Astro.redirect("/404");
+
+const { Content, headings, remarkPluginFrontmatter } = await post.render();
+const related = getRelatedPosts(post, allPosts, 3);
+---
+<ArticleLayout post={post} headings={headings} rawBody={post.body} prev={prev} next={next} related={related}>
+  <Content />
+</ArticleLayout>

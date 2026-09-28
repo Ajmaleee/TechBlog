@@ -1,0 +1,18 @@
+---
+// Analytics is fully optional and off by default. Set PUBLIC_GA_ID (a
+// GA4 measurement ID like "G-XXXXXXX") in your environment to enable it.
+// No third-party script loads at all unless this is configured, so local
+// development never sends analytics traffic.
+const gaId = import.meta.env.PUBLIC_GA_ID;
+---
+{gaId && (
+  <>
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+    <script is:inline define:vars={{ gaId }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", gaId, { anonymize_ip: true });
+    </script>
+  </>
+)}

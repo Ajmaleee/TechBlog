@@ -1,0 +1,23 @@
+---
+import { formatDate, readingTime, type Post } from "../utils/posts";
+
+interface Props { post: Post }
+const { post } = Astro.props;
+const { data } = post;
+const coverSrc = data.cover;
+---
+<article class="post-card">
+  <a href={`/blog/${post.slug}/`} aria-label={data.title}>
+    <img src={coverSrc} alt={data.coverAlt || ""} loading="lazy" width="480" height="270" />
+  </a>
+  <div class="post-card-body">
+    <span class="badge">{data.category}</span>
+    <h3><a href={`/blog/${post.slug}/`}>{data.title}</a></h3>
+    <p class="text-muted" style="margin:0; font-size:0.9rem;">{data.description}</p>
+    <div class="meta-row">
+      <time datetime={data.date.toISOString()}>{formatDate(data.date)}</time>
+      <span aria-hidden="true">·</span>
+      <span>{readingTime(post.body)}</span>
+    </div>
+  </div>
+</article>

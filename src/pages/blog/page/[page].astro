@@ -1,0 +1,34 @@
+---
+import type { GetStaticPaths, Page } from "astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import SEO from "../../../components/SEO.astro";
+import PostCard from "../../../components/PostCard.astro";
+import { getPublishedPosts, type Post } from "../../../utils/posts";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = await getPublishedPosts();
+  // Page 1 is served by /blog/index.astro; this route starts at page 2
+  // but paginate() needs the full set to compute page boundaries.
+  return paginate(posts, { pageSize: 12 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props as { page: Page<Post> };
+---
+<BaseLayout>
+  <SEO
+      slot="head"
+      title={`Blog — Page ${page.currentPage} | Embedded & Circuits`}
+      description="Tutorials and guides on Arduino, ESP32, sensors, and embedded systems."
+      path={`/blog/page/${page.currentPage}/`}
+    />
+  <div class="container" style="padding-top: var(--space-8);">
+    <h1>Blog</h1>
+    <div class="post-grid">
+      {page.data.map((post) => <PostCard post={post} />)}
+    </div>
+    <nav aria-label="Pagination" style="display:flex; justify-content:space-between; margin-top:var(--space-8);">
+      {page.url.prev ? <a class="btn btn-secondary" href={page.url.prev}>← Newer</a> : <span></span>}
+      {page.url.next ? <a class="btn btn-secondary" href={page.url.next}>Older →</a> : <span></span>}
+    </nav>
+  </div>
+</BaseLayout>

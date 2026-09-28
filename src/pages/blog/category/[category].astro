@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import SEO from "../../../components/SEO.astro";
+import PostCard from "../../../components/PostCard.astro";
+import { getPublishedPosts, getAllCategories, slugify } from "../../../utils/posts";
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts();
+  const categories = getAllCategories(posts);
+  return categories.map((category) => ({
+    params: { category: slugify(category) },
+    props: { category, posts: posts.filter((p) => p.data.category === category) },
+  }));
+}
+
+const { category, posts } = Astro.props;
+---
+<BaseLayout>
+  <SEO slot="head" title={`${category} Articles | Embedded & Circuits`} description={`Articles filed under ${category}.`} path={`/blog/category/${slugify(category)}/`} />
+  <div class="container" style="padding-top: var(--space-8);">
+    <p class="breadcrumbs"><a href="/blog/">Blog</a> / {category}</p>
+    <h1>{category}</h1>
+    <div class="post-grid">
+      {posts.map((post) => <PostCard post={post} />)}
+    </div>
+  </div>
+</BaseLayout>

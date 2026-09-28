@@ -1,0 +1,120 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import SEO from "../components/SEO.astro";
+import AdSlot from "../components/AdSlot.astro";
+import { formatDate, readingTime, slugify, type Post } from "../utils/posts";
+
+interface Props {
+  post: Post;
+  headings: { depth: number; slug: string; text: string }[];
+  rawBody: string;
+  prev?: Post | null;
+  next?: Post | null;
+  related: Post[];
+}
+const { post, headings, rawBody, prev, next, related } = Astro.props;
+const { data } = post;
+const path = `/blog/${post.slug}/`;
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const coverSrc = data.cover;
+---
+<BaseLayout>
+  <SEO
+      slot="head"
+      title={data.seoTitle || `${data.title} | Embedded & Circuits`}
+      description={data.seoDescription || data.description}
+      path={path}
+      image={coverSrc}
+      type="article"
+      publishedDate={data.date}
+      modifiedDate={data.updated}
+      author={data.author}
+      tags={data.tags}
+      noindex={data.noindex}
+      canonicalUrl={data.canonicalUrl}
+    />
+
+  <article class="prose-container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a> / <a href="/blog/">Blog</a> / <a href={`/blog/category/${slugify(data.category)}/`}>{data.category}</a> / <span aria-current="page">{data.title}</span>
+    </nav>
+
+    <header class="article-header">
+      <span class="badge">{data.category}</span>
+      <h1>{data.title}</h1>
+      <p class="text-muted">{data.description}</p>
+      <div class="meta-row">
+        <span>By {data.author}</span>
+        <span aria-hidden="true">·</span>
+        <time datetime={data.date.toISOString()}>{formatDate(data.date)}</time>
+        {data.updated && (
+          <>
+            <span aria-hidden="true">·</span>
+            <span>Updated <time datetime={data.updated.toISOString()}>{formatDate(data.updated)}</time></span>
+          </>
+        )}
+        <span aria-hidden="true">·</span>
+        <span>{readingTime(rawBody)}</span>
+      </div>
+    </header>
+
+    {toc.length > 2 && (
+      <details class="toc" open>
+        <summary>Table of contents</summary>
+        <ul>
+          {toc.map((h) => (
+            <li style={h.depth === 3 ? "margin-left: 1rem;" : undefined}>
+              <a href={`#${h.slug}`}>{h.text}</a>
+            </li>
+          ))}
+        </ul>
+      </details>
+    )}
+
+    <AdSlot slot="ad-below-intro" placement="below-intro" />
+
+    <div class="article-body">
+      <slot />
+    </div>
+
+    <AdSlot slot="ad-after-article" placement="after-article" />
+
+    <div class="meta-row" style="margin: var(--space-6) 0;">
+      <strong>Tags:</strong>
+      {data.tags.map((tag) => (
+        <a class="badge" href={`/blog/tag/${slugify(tag)}/`}>{tag}</a>
+      ))}
+    </div>
+
+    {related.length > 0 && (
+      <section aria-labelledby="related-heading">
+        <h2 id="related-heading">Related articles</h2>
+        <div class="post-grid">
+          {related.map((r) => (
+            <div class="post-card">
+              <div class="post-card-body">
+                <h3><a href={`/blog/${r.slug}/`}>{r.data.title}</a></h3>
+                <p class="text-muted" style="margin:0; font-size:0.875rem;">{r.data.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <nav class="post-nav" aria-label="Article navigation">
+      {prev ? (
+        <a href={`/blog/${prev.slug}/`}>
+          <div class="direction">← Previous</div>
+          {prev.data.title}
+        </a>
+      ) : <span></span>}
+      {next ? (
+        <a href={`/blog/${next.slug}/`} class="next">
+          <div class="direction">Next →</div>
+          {next.data.title}
+        </a>
+      ) : <span></span>}
+    </nav>
+  </article>
+</BaseLayout>

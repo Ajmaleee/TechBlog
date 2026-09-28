@@ -1,0 +1,71 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SEO from "../components/SEO.astro";
+---
+<BaseLayout>
+  <SEO slot="head" title="Search | Embedded & Circuits" description="Search articles by title, tag, or category." path="/search/" noindex={true} />
+  <div class="prose-container" style="padding: var(--space-8) 0;">
+    <h1>Search</h1>
+    <div class="field">
+      <label for="search-input">Search articles</label>
+      <input id="search-input" type="search" placeholder="e.g. ESP32, HC-SR04, I2C..." autocomplete="off" />
+    </div>
+    <p id="search-status" class="text-muted" role="status" aria-live="polite"></p>
+    <ul id="search-results" style="list-style:none; padding:0;"></ul>
+  </div>
+
+  <script type="module">
+    const input = document.getElementById("search-input");
+    const status = document.getElementById("search-status");
+    const results = document.getElementById("search-results");
+    let posts = [];
+
+    async function loadIndex() {
+      const res = await fetch("/search-index.json");
+      posts = await res.json();
+    }
+
+    function render(list) {
+      results.innerHTML = "";
+      list.slice(0, 30).forEach((p) => {
+        const li = document.createElement("li");
+        li.style.marginBottom = "1rem";
+        li.style.paddingBottom = "1rem";
+        li.style.borderBottom = "1px solid var(--color-border)";
+        li.innerHTML = `<a href="/blog/${p.slug}/" style="font-weight:600; font-size:1.05rem;">${p.title}</a>
+          <div class="text-muted" style="font-size:0.9rem;">${p.description}</div>
+          <div class="meta-row" style="margin-top:0.25rem;"><span class="badge">${p.category}</span></div>`;
+        results.appendChild(li);
+      });
+    }
+
+    function search(query) {
+      const q = query.trim().toLowerCase();
+      if (!q) {
+        status.textContent = "";
+        results.innerHTML = "";
+        return;
+      }
+      const matches = posts.filter((p) => {
+        const haystack = [p.title, p.description, p.category, ...(p.tags || [])].join(" ").toLowerCase();
+        return haystack.includes(q);
+      });
+      status.textContent = `${matches.length} result${matches.length === 1 ? "" : "s"}`;
+      render(matches);
+    }
+
+    const url = new URL(window.location.href);
+    const initialQ = url.searchParams.get("q") || "";
+    input.value = initialQ;
+
+    loadIndex().then(() => {
+      if (initialQ) search(initialQ);
+    });
+
+    let debounceTimer;
+    input.addEventListener("input", (e) => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => search(e.target.value), 120);
+    });
+  </script>
+</BaseLayout>

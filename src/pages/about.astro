@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SEO from "../components/SEO.astro";
+---
+<BaseLayout>
+  <SEO slot="head" title="About | Embedded & Circuits" description="About the author and this blog." path="/about/" />
+  <div class="prose-container article-body" style="padding: var(--space-8) 0;">
+    <h1>About</h1>
+    <p>
+      I'm Ajmal Ali A, an electronics hobbyist and software developer. This site
+      is where I document Arduino and ESP32 projects, sensor experiments, and the
+      embedded-systems problems I run into — written the way I'd have wanted to
+      find them when I was stuck at 1 a.m. with a breadboard.
+    </p>
+    <h2>What you'll find here</h2>
+    <ul>
+      <li>Practical wiring and interfacing guides for common sensors and modules</li>
+      <li>ESP32 / Arduino project walkthroughs, including the mistakes</li>
+      <li>Notes on debugging flaky hardware and firmware</li>
+      <li>Occasional programming and tooling posts related to embedded work</li>
+    </ul>
+    <h2>Why this blog exists</h2>
+    <p>
+      Replace this paragraph with your own story — how you got into electronics,
+      what you want readers to take away, and what makes your approach different.
+    </p>
+    <p>
+      <a href="/contact/">Get in touch</a> if you spot an error, have a project
+      request, or just want to say hello.
+    </p>
+  </div>
+</BaseLayout>
