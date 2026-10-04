@@ -1,5 +1,5 @@
 ---
-import { getEntry } from "astro:content";
+import { getEntry, render } from "astro:content";
 import ArticleLayout from "../../layouts/ArticleLayout.astro";
 import { getPublishedPosts, getRelatedPosts } from "../../utils/posts";
 
@@ -20,7 +20,7 @@ const { slug, prev, next, allPosts } = Astro.props;
 const post = await getEntry("blog", slug);
 if (!post) return Astro.redirect("/404");
 
-const { Content, headings, remarkPluginFrontmatter } = await post.render();
+const { Content, headings } = await render(post);
 const related = getRelatedPosts(post, allPosts, 3);
 ---
 <ArticleLayout post={post} headings={headings} rawBody={post.body} prev={prev} next={next} related={related}>

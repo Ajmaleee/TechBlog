@@ -17,6 +17,10 @@ const { data } = post;
 const path = `/blog/${post.slug}/`;
 const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 const coverSrc = data.cover;
+// Per-placement AdSense ad unit IDs, supplied as PUBLIC_ env vars in the
+// Cloudflare Pages project settings so no ad markup ever lives in a post.
+const AD_SLOT_BELOW_INTRO = import.meta.env.PUBLIC_ADSENSE_SLOT_BELOW_INTRO ?? "";
+const AD_SLOT_AFTER_ARTICLE = import.meta.env.PUBLIC_ADSENSE_SLOT_AFTER_ARTICLE ?? "";
 ---
 <BaseLayout>
   <SEO
@@ -71,13 +75,13 @@ const coverSrc = data.cover;
       </details>
     )}
 
-    <AdSlot slot="ad-below-intro" placement="below-intro" />
+    <AdSlot adSlot={AD_SLOT_BELOW_INTRO} placement="below-intro" />
 
     <div class="article-body">
       <slot />
     </div>
 
-    <AdSlot slot="ad-after-article" placement="after-article" />
+    <AdSlot adSlot={AD_SLOT_AFTER_ARTICLE} placement="after-article" />
 
     <div class="meta-row" style="margin: var(--space-6) 0;">
       <strong>Tags:</strong>

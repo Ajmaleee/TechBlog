@@ -4,20 +4,27 @@
 // no-op until PUBLIC_ADSENSE_CLIENT_ID is configured.
 //
 // Required env (set in Cloudflare Pages project settings, not committed):
-//   PUBLIC_ADSENSE_CLIENT_ID   e.g. "ca-pub-XXXXXXXXXXXXXXXX"
+//   PUBLIC_ADSENSE_CLIENT_ID            e.g. "ca-pub-XXXXXXXXXXXXXXXX"
+//   PUBLIC_ADSENSE_SLOT_BELOW_INTRO     ad unit id, or blank to skip
+//   PUBLIC_ADSENSE_SLOT_AFTER_ARTICLE   ad unit id, or blank to skip
 //
 // Per-slot IDs are passed as props so different placements can use
-// different AdSense ad units:
-//   <AdSlot slot="1234567890" placement="in-article" />
+// different AdSense ad units. The prop is named `adSlot`, not `slot`,
+// because `slot` is a reserved Astro directive — using it here would
+// route the component into a named <slot> outlet and silently drop it.
+//   <AdSlot adSlot="1234567890" placement="in-article" />
 interface Props {
-  slot: string;
+  adSlot: string;
   placement?: "below-intro" | "in-article" | "after-article" | "sidebar";
   format?: string;
 }
-const { slot, placement = "after-article", format = "auto" } = Astro.props;
+const { adSlot, placement = "after-article", format = "auto" } = Astro.props;
 
 const clientId = import.meta.env.PUBLIC_ADSENSE_CLIENT_ID;
-const enabled = Boolean(clientId) && import.meta.env.PUBLIC_ADSENSE_ENABLED !== "false";
+const enabled =
+  Boolean(clientId) &&
+  Boolean(adSlot) &&
+  import.meta.env.PUBLIC_ADSENSE_ENABLED !== "false";
 ---
 {enabled && (
   <div class={`ad-slot ad-slot--${placement}`} data-placement={placement}>
@@ -26,7 +33,7 @@ const enabled = Boolean(clientId) && import.meta.env.PUBLIC_ADSENSE_ENABLED !== 
       class="adsbygoogle"
       style="display:block"
       data-ad-client={clientId}
-      data-ad-slot={slot}
+      data-ad-slot={adSlot}
       data-ad-format={format}
       data-full-width-responsive="true"
     ></ins>
