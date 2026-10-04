@@ -3,7 +3,7 @@ title: "Interfacing an HC-SR04 Ultrasonic Sensor with ESP32"
 description: "A practical, wiring-first guide to reading distance from an HC-SR04 ultrasonic sensor on an ESP32 using the Arduino core, including the 5V-tolerance gotcha most tutorials skip."
 date: 2026-09-21
 updated: 2026-09-21
-author: "Ajmal Ali A"
+author: "Ajmal Ali"
 category: "ESP32"
 tags:
   - ESP32

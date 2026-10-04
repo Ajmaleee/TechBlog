@@ -3,7 +3,7 @@ title: "Welcome to My Electronics Blog"
 description: "A personal technical blog where I document electronics projects, Arduino experiments, ESP32 builds, sensors, IoT, and the things I learn along the way."
 date: 2026-09-28
 updated: 2026-09-28
-author: "Ajmal Ali A"
+author: "Ajmal Ali"
 category: "General"
 tags:
   - Electronics

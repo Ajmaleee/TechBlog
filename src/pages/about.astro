@@ -3,30 +3,116 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import SEO from "../components/SEO.astro";
 ---
 <BaseLayout>
-  <SEO slot="head" title="About | Embedded & Circuits" description="About the author and this blog." path="/about/" />
+  <SEO slot="head" title="About | Embedded & Circuits" description="Ajmal Ali is a high school student who taught himself electronics from scratch and writes up Arduino, ESP32, and sensor projects as he learns." path="/about/" />
   <div class="prose-container article-body" style="padding: var(--space-8) 0;">
     <h1>About</h1>
     <p>
-      I'm Ajmal Ali A, an electronics hobbyist and software developer. This site
-      is where I document Arduino and ESP32 projects, sensor experiments, and the
-      embedded-systems problems I run into — written the way I'd have wanted to
-      find them when I was stuck at 1 a.m. with a breadboard.
+      I'm Ajmal Ali. I'm in high school, and I teach myself electronics the slow
+      way — with a breadboard, a laptop, and a lot of trial and error. I didn't
+      grow up around this. Nobody in my family is an engineer. Everything on this
+      site I learned from documentation, YouTube, and broken projects of my own.
     </p>
-    <h2>What you'll find here</h2>
+
+    <h2>How this started</h2>
+    <p>
+      The first thing I ever got to work was an LED lighting up. That is not an
+      impressive sentence to read, and it took me far longer than it should have.
+      I didn't have a breadboard, a resistor that was the right value, or anyone
+      nearby to ask why the current-limiting resistor even mattered. I remember
+      being genuinely confused that the light was dim, and later realising I'd
+      picked a resistor more or less at random.
+    </p>
+    <p>
+      What stuck wasn't the LED. It was realising I could get an idea working by
+      myself. Nothing about that first circuit was taught to me. I read it, built
+      it, got it wrong, read more, and tried again. That loop turned into an
+      obsession.
+    </p>
+    <p>
+      I didn't have anyone to ask, so I started writing down what I'd learned.
+      These posts are those notes.
+    </p>
+
+    <h2>What I work with</h2>
+    <p>
+      Mostly the usual beginner-to-intermediate parts, which is exactly where the
+      clear documentation and the real problems are:
+    </p>
     <ul>
-      <li>Practical wiring and interfacing guides for common sensors and modules</li>
-      <li>ESP32 / Arduino project walkthroughs, including the mistakes</li>
-      <li>Notes on debugging flaky hardware and firmware</li>
-      <li>Occasional programming and tooling posts related to embedded work</li>
+      <li>
+        <strong>Arduino</strong> — mostly the UNO and Nano. My default board for
+        anything I just want to light up, move, or beep at.
+      </li>
+      <li>
+        <strong>ESP32</strong> — this is where I spend most of my time. WiFi and
+        Bluetooth, enough GPIO to be interesting, and a much more powerful chip to
+        learn on.
+      </li>
+      <li>
+        <strong>Sensors and modules</strong> — ultrasonic (HC-SR04), temperature
+        and humidity, relays, displays, and whatever else I can get working on a
+        budget.
+      </li>
+      <li>
+        <strong>A breadboard and a lot of jumper wires</strong> — plus a
+        multimeter, which I wish I'd owned a year earlier.
+      </li>
     </ul>
+    <p>
+      My supply of boards and modules has grown faster than my knowledge, which is
+      a problem I'd like to fix.
+    </p>
+
     <h2>Why this blog exists</h2>
     <p>
-      Replace this paragraph with your own story — how you got into electronics,
-      what you want readers to take away, and what makes your approach different.
+      Two reasons, and they're both selfish.
     </p>
     <p>
-      <a href="/contact/">Get in touch</a> if you spot an error, have a project
-      request, or just want to say hello.
+      The first is that I kept losing the same fights. A sensor that worked on my
+      desk and returned garbage on the other side of the room. A pin that silently
+      did nothing because I'd forgotten it was an input pin. If I wrote it down once,
+      I wouldn't have to solve it twice — and the writing forced me to actually
+      understand the fix instead of just getting the light to turn on.
+    </p>
+    <p>
+      The second is that when you're learning something alone, the tutorial either
+      assumes you already know the one thing you're stuck on, or skips the three
+      steps that actually went wrong. I lost real evenings to that. If someone else
+      is stuck at 1 a.m. with a breadboard that won't cooperate, I'd rather they
+      find the answer here than lose the night the way I did.
+    </p>
+    <p>
+      I write about the mistakes more than the wins, because the mistakes are the
+      part that was useful to me.
+    </p>
+
+    <h2>What you'll find here</h2>
+    <ul>
+      <li>Wiring and interfacing guides for common sensors and modules</li>
+      <li>Arduino and ESP32 project walkthroughs, including what went wrong</li>
+      <li>Notes on debugging hardware and firmware that misbehave only sometimes</li>
+      <li>The occasional post on the tooling and code around embedded work</li>
+    </ul>
+
+    <h2>Where this is going</h2>
+    <p>
+      I want to study robotics and hardware engineering properly. I know that
+      "self-taught and motivated" is not a substitute for a degree, and I'm not
+      treating it as one — this blog isn't standing in for a qualification, it's
+      the work itself. It's the record of what I've actually built and understood,
+      and if it's also useful to someone else, so much the better.
+    </p>
+    <p>
+      I don't have all of this figured out yet. I don't fully understand C, I still
+      wire things up backwards, and some of these posts are me working something
+      out in public. I plan to keep going.
+    </p>
+
+    <p>
+      <a href="/contact/">Get in touch</a> if you spot an error, want to suggest a
+      topic, or just want to say hello. Corrections are genuinely welcome — I'd
+      rather be wrong in a post someone can correct than quietly wrong in my own
+      notes.
     </p>
   </div>
 </BaseLayout>

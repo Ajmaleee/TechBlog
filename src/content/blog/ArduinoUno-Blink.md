@@ -3,7 +3,7 @@ title: "Arduino UNO Blink: From Plugging It In to Your First Program"
 description: "My beginner-friendly walkthrough of connecting an Arduino UNO, installing the Arduino IDE and drivers, selecting the board and COM port, and uploading the classic Blink program."
 date: 2026-09-29
 updated: 2026-09-29
-author: "Ajmal Ali A"
+author: "Ajmal Ali"
 category: "Arduino"
 tags:
   - Arduino

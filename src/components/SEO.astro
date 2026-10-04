@@ -1,4 +1,10 @@
 ---
+// The author name used in JSON-LD structured data. Deliberately the fuller
+// "Ajmal Ali A" form, while the visible byline uses the shorter "Ajmal Ali"
+// from post frontmatter — Google prefers a distinguishable full name in
+// schema, and the two don't have to match what the reader sees.
+const SCHEMA_AUTHOR_NAME = "Ajmal Ali A";
+
 interface Props {
   title: string;
   description: string;
@@ -7,7 +13,6 @@ interface Props {
   type?: "website" | "article";
   publishedDate?: Date;
   modifiedDate?: Date;
-  author?: string;
   tags?: string[];
   noindex?: boolean;
   canonicalUrl?: string;
@@ -21,7 +26,6 @@ const {
   type = "website",
   publishedDate,
   modifiedDate,
-  author,
   tags = [],
   noindex = false,
   canonicalUrl,
@@ -48,7 +52,7 @@ const websiteSchema = {
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
-  name: "Ajmal Ali A",
+  name: SCHEMA_AUTHOR_NAME,
   url: siteUrl,
 };
 
@@ -62,7 +66,7 @@ const articleSchema =
         image: ogImage,
         datePublished: publishedDate?.toISOString(),
         dateModified: (modifiedDate ?? publishedDate)?.toISOString(),
-        author: { "@type": "Person", name: author ?? "Ajmal Ali A" },
+        author: { "@type": "Person", name: SCHEMA_AUTHOR_NAME },
         publisher: {
           "@type": "Organization",
           name: siteName,

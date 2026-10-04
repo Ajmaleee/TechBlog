@@ -14,7 +14,7 @@ const blog = defineCollection({
       .min(20, "description must be at least 20 characters (used for SEO + previews)")
       .max(300, "description should stay under ~300 characters"),
     date: z.coerce.date(),
-    author: z.string().default("Ajmal Ali A"),
+    author: z.string().default("Ajmal Ali"),
     category: z.string().min(2),
     tags: z.array(z.string()).min(1, "add at least one tag"),
     // Cover images live in /public/images/ and are referenced by root path
