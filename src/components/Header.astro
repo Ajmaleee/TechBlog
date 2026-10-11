@@ -1,35 +1,102 @@
 ---
-const nav = [
-  { href: "/blog/", label: "Blog" },
-  { href: "/about/", label: "About" },
-  { href: "/contact/", label: "Contact" },
-];
+import { getPublishedPosts, getAllCategories, slugify } from "../utils/posts";
+
+const posts = await getPublishedPosts();
+const categories = getAllCategories(posts);
 const current = Astro.url.pathname;
+
+const today = new Intl.DateTimeFormat("en-US", {
+  weekday: "long",
+  month: "long",
+  day: "numeric",
+  year: "numeric",
+}).format(new Date());
+
+// The three most-used tags make a compact, honest "trending" strip without
+// inventing editorial content. They are derived from real post frontmatter.
+const tagCounts = new Map<string, number>();
+for (const post of posts) {
+  for (const tag of post.data.tags) tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
+}
+const trending = [...tagCounts.entries()]
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 4)
+  .map(([tag]) => tag);
+
+const isActive = (href: string) => (href === "/" ? current === "/" : current.startsWith(href));
 ---
-<header class="site-header">
-  <div class="container">
-    <a href="/" class="brand">Embedded &amp; Circuits</a>
-
-    <nav class="main-nav" id="main-nav" aria-label="Primary">
-      {nav.map((item) => (
-        <a href={item.href} aria-current={current.startsWith(item.href) ? "page" : undefined}>
-          {item.label}
-        </a>
+<div class="topbar">
+  <div class="container topbar-inner">
+    <span class="topbar-date">{today}</span>
+    <div class="topbar-trending" aria-label="Popular topics">
+      <span class="label">Trending</span>
+      {trending.map((tag) => (
+        <a href={`/blog/tag/${slugify(tag)}/`}>#{tag}</a>
       ))}
-      <a href="/search/">Search</a>
+    </div>
+    <div class="topbar-links">
+      <a href="/about/">About</a>
+      <a href="/contact/">Contact</a>
       <a href="/rss.xml">RSS</a>
-    </nav>
+    </div>
+  </div>
+</div>
 
-    <div style="display:flex; gap: 0.5rem; align-items:center;">
-      <button class="icon-btn" id="theme-toggle" aria-label="Toggle dark mode" type="button">
-        <svg id="theme-icon-dark" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
-      </button>
-      <button class="icon-btn nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav" type="button">
+<header class="masthead">
+  <div class="container masthead-inner">
+    <div class="masthead-left">
+      <button class="icon-btn nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer" type="button">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="masthead-brand">
+      <a href="/" class="brand-wordmark">Embedded <em>&amp;</em> Circuits</a>
+      <span class="brand-tagline">Arduino · ESP32 · Embedded Systems</span>
+    </div>
+
+    <div class="masthead-actions">
+      <a href="/search/" class="icon-btn" aria-label="Search" title="Search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </a>
+      <button class="icon-btn" id="theme-toggle" aria-label="Toggle dark mode" type="button">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
       </button>
     </div>
   </div>
 </header>
+
+<nav class="cat-nav" aria-label="Sections">
+  <div class="container cat-nav-inner">
+    <a href="/" aria-current={current === "/" ? "page" : undefined}>Home</a>
+    <a href="/blog/" aria-current={isActive("/blog/") && !current.includes("/category/") && !current.includes("/tag/") ? "page" : undefined}>All Articles</a>
+    {categories.map((cat) => (
+      <a href={`/blog/category/${slugify(cat)}/`} aria-current={current === `/blog/category/${slugify(cat)}/` ? "page" : undefined}>{cat}</a>
+    ))}
+    <span class="nav-spacer"></span>
+    <a href="/about/" aria-current={current === "/about/" ? "page" : undefined}>About</a>
+    <a href="/contact/" aria-current={current === "/contact/" ? "page" : undefined}>Contact</a>
+  </div>
+</nav>
+
+<div class="scrim" id="nav-scrim" hidden></div>
+<aside class="mobile-drawer" id="mobile-drawer" aria-label="Menu" aria-hidden="true">
+  <button class="icon-btn drawer-close" id="nav-close" aria-label="Close menu" type="button">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <h2>Explore</h2>
+  <a href="/">Home</a>
+  <a href="/blog/">All Articles</a>
+  <h2>Sections</h2>
+  {categories.map((cat) => (
+    <a href={`/blog/category/${slugify(cat)}/`}>{cat}</a>
+  ))}
+  <h2>Site</h2>
+  <a href="/about/">About</a>
+  <a href="/contact/">Contact</a>
+  <a href="/search/">Search</a>
+  <a href="/rss.xml">RSS feed</a>
+</aside>
 
 <script is:inline>
   (function () {
@@ -45,11 +112,23 @@ const current = Astro.url.pathname;
       try { localStorage.setItem("theme", next); } catch (e) {}
     });
 
-    var navToggle = document.getElementById("nav-toggle");
-    var nav = document.getElementById("main-nav");
-    navToggle?.addEventListener("click", function () {
-      var open = nav.classList.toggle("open");
-      navToggle.setAttribute("aria-expanded", String(open));
-    });
+    var toggle = document.getElementById("nav-toggle");
+    var drawer = document.getElementById("mobile-drawer");
+    var scrim = document.getElementById("nav-scrim");
+    var close = document.getElementById("nav-close");
+
+    function setOpen(open) {
+      if (!drawer) return;
+      drawer.classList.toggle("open", open);
+      drawer.setAttribute("aria-hidden", String(!open));
+      if (scrim) { scrim.hidden = !open; scrim.classList.toggle("open", open); }
+      toggle?.setAttribute("aria-expanded", String(open));
+      document.body.style.overflow = open ? "hidden" : "";
+    }
+
+    toggle?.addEventListener("click", function () { setOpen(!drawer.classList.contains("open")); });
+    close?.addEventListener("click", function () { setOpen(false); });
+    scrim?.addEventListener("click", function () { setOpen(false); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") setOpen(false); });
   })();
 </script>

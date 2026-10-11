@@ -1,19 +1,22 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SEO from "../components/SEO.astro";
-const LAST_UPDATED = "2026-09-21";
+const LAST_UPDATED = "2026-10-11";
+const CONTACT_EMAIL = "ajmalsworkshop@gmail.com";
 ---
 <BaseLayout>
-  <SEO slot="head" title="Privacy Policy | Embedded & Circuits" description="How this site handles data." path="/privacy/" noindex={false} />
-  <div class="prose-container article-body" style="padding: var(--space-8) 0;">
-    <h1>Privacy Policy</h1>
-    <p class="text-muted">Last updated: {LAST_UPDATED}</p>
-
+  <SEO slot="head" title="Privacy Policy | Embedded & Circuits" description="How this site handles data, cookies, analytics, and advertising." path="/privacy/" />
+  <div class="container">
+    <header class="archive-head">
+      <span class="kicker">Legal</span>
+      <h1>Privacy Policy</h1>
+      <p>Last updated: {LAST_UPDATED}</p>
+    </header>
+    <div class="prose-container article-body" style="padding: 0; max-width: 44rem; padding-bottom: var(--space-12);">
     <p>
-      <strong>This is a template, not legal advice.</strong> Replace the
-      bracketed sections below to match what this site actually does before
-      publishing. Consult a lawyer if you need this to be legally binding for
-      your jurisdiction (e.g. GDPR, CCPA).
+      This site is a personal blog. It has no accounts, no logins, and no
+      user-submitted content. This policy explains what third-party services
+      may run when you visit, and the choices you have.
     </p>
 
     <h2>What this site collects</h2>
@@ -87,6 +90,10 @@ const LAST_UPDATED = "2026-09-21";
     </p>
 
     <h2>Contact</h2>
-    <p>Questions about this policy: see the <a href="/contact/">contact page</a>.</p>
+    <p>
+      Questions about this policy? Email
+      <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+    </p>
+    </div>
   </div>
 </BaseLayout>

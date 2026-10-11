@@ -27,7 +27,10 @@ export default defineConfig({
   integrations: [
     mdx(),
     sitemap({
-      filter: (page) => !page.includes("/drafts/"),
+      // Keep the XML sitemap to indexable content: the search page is
+      // noindex, and /blog/page/1/ is a duplicate of /blog/.
+      filter: (page) =>
+        !page.includes("/search/") && !page.includes("/blog/page/1/"),
     }),
   ],
   markdown: {

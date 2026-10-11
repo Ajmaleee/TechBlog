@@ -1,15 +1,35 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SEO from "../components/SEO.astro";
+import PostCard from "../components/PostCard.astro";
+import { getPublishedPosts } from "../utils/posts";
+
+const posts = (await getPublishedPosts()).slice(0, 3);
 ---
 <BaseLayout>
   <SEO slot="head" title="Page Not Found | Embedded & Circuits" description="This page doesn't exist." path="/404/" noindex={true} />
-  <div class="prose-container" style="padding: var(--space-16) 0; text-align:center;">
-    <h1 style="font-size: 3rem;">404</h1>
-    <p class="text-muted">That page went missing — possibly to the same place as a loose jumper wire.</p>
-    <div style="margin-top: var(--space-6);">
+  <div class="container" style="padding: var(--space-16) 0; text-align:center;">
+    <span class="kicker" style="color: var(--red); font-weight:800; letter-spacing:0.1em; text-transform:uppercase;">Error 404</span>
+    <h1 style="font-family: var(--font-serif);">This page has gone missing</h1>
+    <p class="text-muted" style="max-width: 32rem; margin: 0 auto var(--space-6);">
+      It may have been removed, renamed, or it might be off wandering with a loose
+      jumper wire. Let's get you back to something useful.
+    </p>
+    <div style="display:flex; gap: var(--space-3); justify-content:center; flex-wrap:wrap;">
       <a class="btn" href="/">Back to home</a>
-      <a class="btn btn-secondary" href="/blog/">Browse the blog</a>
+      <a class="btn btn-secondary" href="/blog/">Browse all articles</a>
+      <a class="btn btn-secondary" href="/search/">Search</a>
     </div>
   </div>
+
+  {posts.length > 0 && (
+    <div class="container" style="padding-bottom: var(--space-16);">
+      <div class="section-head">
+        <h2>Recent Articles</h2>
+      </div>
+      <div class="post-grid">
+        {posts.map((post) => <PostCard post={post} />)}
+      </div>
+    </div>
+  )}
 </BaseLayout>

@@ -34,12 +34,13 @@ const adsenseEnabled = Boolean(adsenseClientId) && import.meta.env.PUBLIC_ADSENS
     <Analytics />
   </head>
   <body class={bodyClass}>
-    <a href="#main-content" class="visually-hidden">Skip to content</a>
+    <a href="#main-content" class="skip-link visually-hidden">Skip to content</a>
     <Header />
     <main id="main-content">
       <slot />
     </main>
     <Footer />
     <script src="/scripts/code-copy.js" is:inline defer></script>
+    <script src="/scripts/image-fallback.js" is:inline defer></script>
   </body>
 </html>

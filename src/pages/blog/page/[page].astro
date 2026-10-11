@@ -7,28 +7,44 @@ import { getPublishedPosts, type Post } from "../../../utils/posts";
 
 export const getStaticPaths = (async ({ paginate }) => {
   const posts = await getPublishedPosts();
-  // Page 1 is served by /blog/index.astro; this route starts at page 2
-  // but paginate() needs the full set to compute page boundaries.
   return paginate(posts, { pageSize: 12 });
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props as { page: Page<Post> };
+const total = page.lastPage;
+// /blog/page/1/ is a duplicate of /blog/, so point page 1 at the canonical
+// archive URL to keep search engines from indexing both.
+const siteUrl = Astro.site?.toString().replace(/\/$/, "") ?? "";
+const canonicalUrl = page.currentPage === 1 ? `${siteUrl}/blog/` : undefined;
 ---
 <BaseLayout>
   <SEO
       slot="head"
-      title={`Blog — Page ${page.currentPage} | Embedded & Circuits`}
+      title={`All Articles — Page ${page.currentPage} | Embedded & Circuits`}
       description="Tutorials and guides on Arduino, ESP32, sensors, and embedded systems."
       path={`/blog/page/${page.currentPage}/`}
+      canonicalUrl={canonicalUrl}
     />
-  <div class="container" style="padding-top: var(--space-8);">
-    <h1>Blog</h1>
+  <div class="container">
+    <header class="archive-head">
+      <span class="kicker">The Archive</span>
+      <h1>All Articles</h1>
+      <p>Page {page.currentPage} of {total}</p>
+    </header>
+
     <div class="post-grid">
       {page.data.map((post) => <PostCard post={post} />)}
     </div>
-    <nav aria-label="Pagination" style="display:flex; justify-content:space-between; margin-top:var(--space-8);">
-      {page.url.prev ? <a class="btn btn-secondary" href={page.url.prev}>← Newer</a> : <span></span>}
-      {page.url.next ? <a class="btn btn-secondary" href={page.url.next}>Older →</a> : <span></span>}
+
+    <nav class="pagination" aria-label="Pagination">
+      {page.url.prev ? <a href={page.url.prev}>← Newer</a> : null}
+      {Array.from({ length: total }, (_, i) => i + 1).map((n) => {
+        const href = n === 1 ? "/blog/" : `/blog/page/${n}/`;
+        return n === page.currentPage
+          ? <span aria-current="page">{n}</span>
+          : <a href={href}>{n}</a>;
+      })}
+      {page.url.next ? <a href={page.url.next}>Older →</a> : null}
     </nav>
   </div>
 </BaseLayout>

@@ -2,35 +2,52 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SEO from "../../components/SEO.astro";
 import PostCard from "../../components/PostCard.astro";
-import { getPublishedPosts, getAllCategories, slugify } from "../../utils/posts";
+import { getPublishedPosts, getAllCategories, getAllTags, slugify } from "../../utils/posts";
 
 const POSTS_PER_PAGE = 12;
 const allPosts = await getPublishedPosts();
 const posts = allPosts.slice(0, POSTS_PER_PAGE);
 const hasMore = allPosts.length > POSTS_PER_PAGE;
 const categories = getAllCategories(allPosts);
+const tags = getAllTags(allPosts);
 ---
 <BaseLayout>
-  <SEO slot="head" title="Blog | Embedded & Circuits" description="Tutorials and guides on Arduino, ESP32, sensors, and embedded systems." path="/blog/" />
+  <SEO slot="head" title="All Articles | Embedded & Circuits" description="Tutorials and guides on Arduino, ESP32, sensors, and embedded systems." path="/blog/" />
 
-  <div class="container" style="padding-top: var(--space-8);">
-    <h1>Blog</h1>
-
-    <div class="meta-row" style="margin-bottom: var(--space-6);">
-      <span>Categories:</span>
-      {categories.map((cat) => (
-        <a class="badge" href={`/blog/category/${slugify(cat)}/`}>{cat}</a>
-      ))}
-    </div>
+  <div class="container">
+    <header class="archive-head">
+      <span class="kicker">The Archive</span>
+      <h1>All Articles</h1>
+      <p>
+        Every tutorial, build log, and wiring guide on the site — from first-blink
+        walkthroughs to full ESP32 projects.
+      </p>
+      <div class="tag-cloud" style="margin-top: var(--space-5);">
+        {categories.map((cat) => (
+          <a class="badge" href={`/blog/category/${slugify(cat)}/`}>{cat}</a>
+        ))}
+      </div>
+    </header>
 
     <div class="post-grid" id="post-list">
       {posts.map((post) => <PostCard post={post} />)}
     </div>
 
     {hasMore && (
-      <div style="text-align:center; margin-top: var(--space-8);">
-        <a class="btn btn-secondary" href="/blog/page/2/">Load more articles</a>
-      </div>
+      <nav class="pagination" aria-label="Pagination">
+        <a class="btn" href="/blog/page/2/">Older articles →</a>
+      </nav>
     )}
+
+    <section aria-labelledby="tags-heading" style="margin: var(--space-12) 0;">
+      <div class="section-head">
+        <h2 id="tags-heading">All Tags</h2>
+      </div>
+      <div class="tag-cloud">
+        {tags.map((tag) => (
+          <a class="badge" href={`/blog/tag/${slugify(tag)}/`}>#{tag}</a>
+        ))}
+      </div>
+    </section>
   </div>
 </BaseLayout>

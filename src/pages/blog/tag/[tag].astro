@@ -17,9 +17,15 @@ const { tag, posts } = Astro.props;
 ---
 <BaseLayout>
   <SEO slot="head" title={`#${tag} | Embedded & Circuits`} description={`Articles tagged ${tag}.`} path={`/blog/tag/${slugify(tag)}/`} />
-  <div class="container" style="padding-top: var(--space-8);">
-    <p class="breadcrumbs"><a href="/blog/">Blog</a> / #{tag}</p>
-    <h1>#{tag}</h1>
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb" style="padding-top: var(--space-6);">
+      <a href="/">Home</a> / <a href="/blog/">Articles</a> / <span aria-current="page">#{tag}</span>
+    </nav>
+    <header class="archive-head" style="border-top: none; padding-top: 0;">
+      <span class="kicker">Tag</span>
+      <h1>#{tag}</h1>
+      <p>{posts.length} article{posts.length === 1 ? "" : "s"} tagged “{tag}”.</p>
+    </header>
     <div class="post-grid">
       {posts.map((post) => <PostCard post={post} />)}
     </div>

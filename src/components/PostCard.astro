@@ -1,23 +1,64 @@
 ---
 import { formatDate, readingTime, type Post } from "../utils/posts";
 
-interface Props { post: Post }
-const { post } = Astro.props;
+interface Props {
+  post: Post;
+  variant?: "card" | "lead" | "list";
+  showMedia?: boolean;
+}
+const { post, variant = "card", showMedia = true } = Astro.props;
 const { data } = post;
-const coverSrc = data.cover;
+const href = `/blog/${post.slug}/`;
+const hasMedia = showMedia && variant !== "list";
 ---
-<article class="post-card">
-  <a href={`/blog/${post.slug}/`} aria-label={data.title}>
-    <img src={coverSrc} alt={data.coverAlt || ""} loading="lazy" width="480" height="270" />
-  </a>
-  <div class="post-card-body">
+
+{variant === "lead" && (
+  <article class="lead-story">
+    {hasMedia && (
+      <a class="lead-story__media" href={href} tabindex="-1" aria-hidden="true">
+        <img src={data.cover} alt={data.coverAlt || ""} width="1200" height="675" loading="eager" />
+      </a>
+    )}
     <span class="badge">{data.category}</span>
-    <h3><a href={`/blog/${post.slug}/`}>{data.title}</a></h3>
-    <p class="text-muted" style="margin:0; font-size:0.9rem;">{data.description}</p>
-    <div class="meta-row">
+    <h2 class="lead-story__title"><a href={href}>{data.title}</a></h2>
+    <p class="lead-story__dek">{data.description}</p>
+    <div class="byline">
+      <span class="author">By {data.author}</span>
+      <span aria-hidden="true">·</span>
       <time datetime={data.date.toISOString()}>{formatDate(data.date)}</time>
       <span aria-hidden="true">·</span>
       <span>{readingTime(post.body)}</span>
     </div>
-  </div>
-</article>
+  </article>
+)}
+
+{variant === "list" && (
+  <article class="story">
+    <h3 class="story__title"><a href={href}>{data.title}</a></h3>
+    <div class="byline">
+      <span class="author">By {data.author}</span>
+      <span aria-hidden="true">·</span>
+      <time datetime={data.date.toISOString()}>{formatDate(data.date)}</time>
+    </div>
+  </article>
+)}
+
+{variant === "card" && (
+  <article class="post-card">
+    {hasMedia && (
+      <a class="post-card__media" href={href} tabindex="-1" aria-hidden="true">
+        <img src={data.cover} alt={data.coverAlt || ""} width="480" height="270" loading="lazy" />
+      </a>
+    )}
+    <div class="post-card-body">
+      <span class="badge">{data.category}</span>
+      <h3><a href={href}>{data.title}</a></h3>
+      <p class="text-muted" style="margin:0; font-size:0.9rem;">{data.description}</p>
+      <div class="meta-row" style="margin-top:auto;">
+        <time datetime={data.date.toISOString()}>{formatDate(data.date)}</time>
+        <span aria-hidden="true">·</span>
+        <span>{readingTime(post.body)}</span>
+      </div>
+    </div>
+  </article>
+)}

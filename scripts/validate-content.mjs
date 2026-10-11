@@ -35,7 +35,13 @@ for (const file of files) {
   } else if (typeof data.cover === "string" && data.cover.startsWith("/")) {
     const imgPath = path.join(process.cwd(), "public", data.cover);
     if (!fs.existsSync(imgPath)) {
-      errors.push(`${file}: cover image "${data.cover}" not found in /public`);
+      // A missing image file is a warning, not an error: the build still
+      // succeeds and public/scripts/image-fallback.js swaps in an on-brand
+      // placeholder at runtime, so the page never shows a broken image.
+      // The author is told exactly which file to drop into /public.
+      warnings.push(
+        `${file}: cover image "${data.cover}" not found in /public yet (a placeholder will be shown until it's added)`
+      );
     }
   }
 

@@ -4,8 +4,13 @@ import SEO from "../components/SEO.astro";
 ---
 <BaseLayout>
   <SEO slot="head" title="About | Embedded & Circuits" description="Ajmal Ali is a high school student who taught himself electronics from scratch and writes up Arduino, ESP32, and sensor projects as he learns." path="/about/" />
-  <div class="prose-container article-body" style="padding: var(--space-8) 0;">
-    <h1>About</h1>
+  <div class="container">
+    <header class="archive-head">
+      <span class="kicker">About</span>
+      <h1>Ajmal Ali</h1>
+      <p>A self-taught electronics hobbyist writing up what he builds and breaks.</p>
+    </header>
+    <div class="prose-container article-body" style="padding: 0; max-width: 44rem; padding-bottom: var(--space-12);">
     <p>
       I'm Ajmal Ali. I'm in high school, and I teach myself electronics the slow
       way — with a breadboard, a laptop, and a lot of trial and error. I didn't
@@ -114,5 +119,6 @@ import SEO from "../components/SEO.astro";
       rather be wrong in a post someone can correct than quietly wrong in my own
       notes.
     </p>
+    </div>
   </div>
 </BaseLayout>

@@ -1,25 +1,32 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SEO from "../components/SEO.astro";
-// Configure your contact email/form endpoint here rather than hardcoding
-// it in multiple places.
-const CONTACT_EMAIL = "hello@example.com";
+const CONTACT_EMAIL = "ajmalsworkshop@gmail.com";
 ---
 <BaseLayout>
-  <SEO slot="head" title="Contact | Embedded & Circuits" description="Get in touch." path="/contact/" />
-  <div class="prose-container article-body" style="padding: var(--space-8) 0;">
-    <h1>Contact</h1>
-    <p>
-      Found a mistake in an article, want to suggest a topic, or just want to
-      talk electronics? Reach me at
-      <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
-    </p>
-    <p class="text-muted" style="font-size:0.9rem;">
-      This is a static site with no backend, so this page links directly to
-      email rather than submitting a form. If you'd like a real contact form
-      later, a service like Cloudflare Pages Forms, Formspree, or a small
-      Cloudflare Worker can be added here without changing the rest of the
-      site's architecture.
-    </p>
+  <SEO slot="head" title="Contact | Embedded & Circuits" description="Get in touch with Ajmal Ali about corrections, topic suggestions, or questions." path="/contact/" />
+  <div class="container">
+    <header class="archive-head">
+      <span class="kicker">Contact</span>
+      <h1>Get in Touch</h1>
+      <p>Corrections, topic suggestions, and questions are all welcome.</p>
+    </header>
+
+    <div class="prose-container article-body" style="padding: 0; max-width: 44rem;">
+      <p>
+        Found a mistake in an article, want to suggest a topic, or just want to
+        talk electronics? The fastest way to reach me is email:
+      </p>
+      <p style="font-size: 1.25rem;">
+        <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+      </p>
+      <p class="text-muted" style="font-size:0.9rem;">
+        This is a static site with no backend, so this page links directly to
+        email rather than submitting a form. If you'd like a real contact form
+        later, a service like Cloudflare Pages Forms, Formspree, or a small
+        Cloudflare Worker can be added here without changing the rest of the
+        site's architecture.
+      </p>
+    </div>
   </div>
 </BaseLayout>

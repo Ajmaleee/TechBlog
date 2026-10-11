@@ -1,16 +1,60 @@
 ---
+import { getPublishedPosts, getAllCategories, slugify } from "../utils/posts";
+
 const year = new Date().getFullYear();
+const posts = await getPublishedPosts();
+const categories = getAllCategories(posts);
+const recent = posts.slice(0, 4);
+const contactEmail = "ajmalsworkshop@gmail.com";
 ---
 <footer class="site-footer">
   <div class="container">
-    <p style="margin:0;">© {year} Embedded &amp; Circuits. Written by Ajmal Ali.</p>
-    <nav class="footer-links" aria-label="Footer">
-      <a href="/about/">About</a>
-      <a href="/contact/">Contact</a>
-      <a href="/privacy/">Privacy Policy</a>
-      <a href="/terms/">Terms</a>
-      <a href="/rss.xml">RSS</a>
-      <a href="/sitemap-index.xml">Sitemap</a>
-    </nav>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="brand-wordmark">Embedded <em>&amp;</em> Circuits</a>
+        <p>
+          Practical Arduino, ESP32, and embedded-systems tutorials written from
+          the bench — wiring guides, project builds, and the mistakes along the way.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h3>Sections</h3>
+        <ul>
+          <li><a href="/blog/">All articles</a></li>
+          {categories.map((cat) => (
+            <li><a href={`/blog/category/${slugify(cat)}/`}>{cat}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3>Latest</h3>
+        <ul>
+          {recent.map((post) => (
+            <li><a href={`/blog/${post.slug}/`}>{post.data.title}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3>Site</h3>
+        <ul>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/contact/">Contact</a></li>
+          <li><a href="/search/">Search</a></li>
+          <li><a href="/rss.xml">RSS feed</a></li>
+          <li><a href="/sitemap-index.xml">Sitemap</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© {year} Embedded &amp; Circuits · Written by Ajmal Ali · <a href={`mailto:${contactEmail}`}>{contactEmail}</a></span>
+      <nav aria-label="Legal">
+        <a href="/privacy/">Privacy Policy</a>
+        <a href="/terms/">Terms &amp; Disclaimer</a>
+      </nav>
+    </div>
   </div>
 </footer>
