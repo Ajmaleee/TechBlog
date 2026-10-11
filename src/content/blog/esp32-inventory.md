@@ -3,7 +3,7 @@ title: "Building My ESP32 Inventory Manager: RTC, Keypad, OLED, Sleep Modes and 
 description: "A look inside my ESP32-based inventory manager and dashboard, including the custom keypad, RTC integration, power optimization, LittleFS storage, and plans for voice control."
 date: 2026-10-04
 updated: 2026-10-04
-author: "Ajmal Ali A"
+author: "Ajmal Ali"
 category: "ESP32"
 tags:
   - ESP32

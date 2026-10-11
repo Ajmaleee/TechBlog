@@ -1,13 +1,19 @@
 import { defineConfig } from "astro/config";
+import { loadEnv } from "vite";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import remarkDirective from "remark-directive";
 import { remarkCallouts } from "./src/utils/remark-callouts.mjs";
 
-// The production domain is read from an environment variable so the site
-// never ships with a hardcoded dev URL. Set PUBLIC_SITE_URL in your
-// Cloudflare Pages project settings (and locally in .env).
-const SITE_URL = process.env.PUBLIC_SITE_URL || "https://example.com";
+// Astro exposes .env values to app code through import.meta.env, but this
+// config file is evaluated before that and only sees real process env vars.
+// loadEnv reads the .env file explicitly, so a local build resolves the same
+// values as the Cloudflare Pages build, where they are real environment
+// variables. process.env still takes priority, so a deploy can override
+// anything committed in a local .env.
+const fileEnv = loadEnv(process.env.NODE_ENV || "production", process.cwd(), "PUBLIC_");
+const SITE_URL =
+  process.env.PUBLIC_SITE_URL || fileEnv.PUBLIC_SITE_URL || "https://example.com";
 
 export default defineConfig({
   site: SITE_URL,
@@ -32,10 +38,5 @@ export default defineConfig({
   image: {
     // Astro's built-in image service handles resizing + AVIF/WebP output
     // for local images referenced from Markdown frontmatter and content.
-  },
-  vite: {
-    define: {
-      __ADSENSE_CLIENT_ID__: JSON.stringify(process.env.PUBLIC_ADSENSE_CLIENT_ID || ""),
-    },
   },
 });
