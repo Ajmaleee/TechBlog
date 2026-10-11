@@ -20,7 +20,9 @@ interface Props {
 }
 const { adSlot, placement = "after-article", format = "auto" } = Astro.props;
 
-const clientId = import.meta.env.PUBLIC_ADSENSE_CLIENT_ID;
+const clientId =
+  import.meta.env.PUBLIC_ADSENSE_CLIENT_ID ||
+  (import.meta.env.PROD ? "ca-pub-7330488077866990" : "");
 const enabled =
   Boolean(clientId) &&
   Boolean(adSlot) &&

@@ -1,9 +1,9 @@
 ---
-// Analytics is fully optional and off by default. Set PUBLIC_GA_ID (a
-// GA4 measurement ID like "G-XXXXXXX") in your environment to enable it.
-// No third-party script loads at all unless this is configured, so local
-// development never sends analytics traffic.
-const gaId = import.meta.env.PUBLIC_GA_ID;
+// GA4 measurement ID. Public by design, so it is hardcoded as the production
+// default (keeping `astro dev` silent) and still overridable via PUBLIC_GA_ID.
+const gaId =
+  import.meta.env.PUBLIC_GA_ID ||
+  (import.meta.env.PROD ? "G-YF24KHNCYC" : "");
 ---
 {gaId && (
   <>

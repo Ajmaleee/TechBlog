@@ -20,24 +20,6 @@ const fileEnv = loadEnv(process.env.NODE_ENV || "production", process.cwd(), "PU
 const SITE_URL =
   process.env.PUBLIC_SITE_URL || fileEnv.PUBLIC_SITE_URL || "https://ajmaleeeblog.pages.dev";
 
-// Cloudflare Pages only injects environment variables into builds that run
-// *after* they are set, so a missing variable fails silently: the analytics,
-// AdSense, or search-console tag simply never appears and Google reports
-// "couldn't verify". Log which optional tags this build actually resolved so
-// that absence is visible in the Cloudflare build log instead of a mystery.
-// These variables are all public by design, so only presence is logged.
-for (const key of [
-  "PUBLIC_GA_ID",
-  "PUBLIC_GSC_VERIFICATION",
-  "PUBLIC_ADSENSE_CLIENT_ID",
-]) {
-  if (!(process.env[key] || fileEnv[key])) {
-    console.warn(
-      `[site-config] ${key} is not set for this build — its tag will be omitted from the output.`
-    );
-  }
-}
-
 export default defineConfig({
   site: SITE_URL,
   output: "static",
