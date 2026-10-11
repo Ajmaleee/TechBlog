@@ -12,7 +12,9 @@ export async function GET(context) {
       description: post.data.description,
       pubDate: post.data.date,
       link: `/blog/${post.slug}/`,
-      categories: [post.data.category, ...post.data.tags],
+      // A post's category is often also one of its tags, which would emit the
+      // same <category> twice. De-duplicate before handing them to the feed.
+      categories: [...new Set([post.data.category, ...post.data.tags])],
       author: post.data.author,
     })),
     customData: `<language>en-us</language>`,

@@ -11,9 +11,14 @@ import { remarkCallouts } from "./src/utils/remark-callouts.mjs";
 // values as the Cloudflare Pages build, where they are real environment
 // variables. process.env still takes priority, so a deploy can override
 // anything committed in a local .env.
+//
+// The fallback is the live domain rather than a placeholder, because .env is
+// gitignored and therefore absent on Cloudflare Pages — without this the
+// deployed feed, sitemap, RSS and canonicals would all silently point at
+// example.com. Override PUBLIC_SITE_URL when a custom domain is added.
 const fileEnv = loadEnv(process.env.NODE_ENV || "production", process.cwd(), "PUBLIC_");
 const SITE_URL =
-  process.env.PUBLIC_SITE_URL || fileEnv.PUBLIC_SITE_URL || "https://example.com";
+  process.env.PUBLIC_SITE_URL || fileEnv.PUBLIC_SITE_URL || "https://ajmaleeeblog.pages.dev";
 
 export default defineConfig({
   site: SITE_URL,
