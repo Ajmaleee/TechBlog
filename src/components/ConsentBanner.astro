@@ -1,0 +1,67 @@
+---
+// Cookie / consent notice. Shown on first visit; choice is stored in
+// localStorage and fed to Google Consent Mode v2. Paired with
+// ConsentMode.astro, which sets the denied-by-default signals before the
+// Google tags load. Production only; set PUBLIC_CONSENT_ENABLED=false to
+// omit it (e.g. if a third-party CMP is used instead).
+const enabled =
+  import.meta.env.PROD && import.meta.env.PUBLIC_CONSENT_ENABLED !== "false";
+---
+{enabled && (
+  <div
+    id="cookie-consent"
+    class="consent"
+    role="dialog"
+    aria-live="polite"
+    aria-label="Cookie consent"
+    hidden
+  >
+    <div class="consent__inner">
+      <p class="consent__text">
+        This site uses cookies for anonymous analytics and to show ads. Accept
+        all, or allow only the cookies needed to run the site. See the
+        <a href="/privacy/">Privacy Policy</a>.
+      </p>
+      <div class="consent__actions">
+        <button type="button" class="consent__btn consent__btn--ghost" data-consent="reject">
+          Reject non-essential
+        </button>
+        <button type="button" class="consent__btn consent__btn--primary" data-consent="accept">
+          Accept all
+        </button>
+      </div>
+    </div>
+  </div>
+  <script is:inline>
+    (function () {
+      var KEY = "consent_v1";
+      var el = document.getElementById("cookie-consent");
+      if (!el) return;
+      function apply(granted) {
+        if (typeof gtag === "function") {
+          gtag("consent", "update", {
+            ad_storage: granted ? "granted" : "denied",
+            ad_user_data: granted ? "granted" : "denied",
+            ad_personalization: granted ? "granted" : "denied",
+            analytics_storage: granted ? "granted" : "denied",
+          });
+        }
+      }
+      var stored = null;
+      try {
+        stored = localStorage.getItem(KEY);
+      } catch (e) {}
+      if (!stored) el.hidden = false;
+      el.addEventListener("click", function (event) {
+        var btn = event.target.closest("[data-consent]");
+        if (!btn) return;
+        var granted = btn.getAttribute("data-consent") === "accept";
+        try {
+          localStorage.setItem(KEY, granted ? "granted" : "denied");
+        } catch (e2) {}
+        apply(granted);
+        el.hidden = true;
+      });
+    })();
+  </script>
+)}

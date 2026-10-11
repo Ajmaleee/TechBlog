@@ -1,0 +1,34 @@
+---
+// Google Consent Mode v2. This MUST render before the GA4 and AdSense tags
+// (Analytics.astro / BaseLayout.astro) so that advertising and analytics
+// storage default to "denied" and no non-essential cookies are written until
+// the visitor accepts via ConsentBanner.astro. Production only; set
+// PUBLIC_CONSENT_ENABLED=false to omit it (e.g. if a third-party CMP is used).
+const enabled =
+  import.meta.env.PROD && import.meta.env.PUBLIC_CONSENT_ENABLED !== "false";
+---
+{enabled && (
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag("consent", "default", {
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied",
+      analytics_storage: "denied",
+      functionality_storage: "granted",
+      security_storage: "granted",
+      wait_for_update: 500,
+    });
+    try {
+      if (localStorage.getItem("consent_v1") === "granted") {
+        gtag("consent", "update", {
+          ad_storage: "granted",
+          ad_user_data: "granted",
+          ad_personalization: "granted",
+          analytics_storage: "granted",
+        });
+      }
+    } catch (e) {}
+  </script>
+)}
