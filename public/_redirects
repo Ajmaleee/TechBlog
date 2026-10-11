@@ -1,0 +1,5 @@
+# Search Console HTML-file verification.
+# Cloudflare Pages 308-redirects any /foo.html request to /foo (clean URLs),
+# which makes Google's "HTML file" check fail. A 200 rewrite serves the token
+# at the exact .html URL Google expects, with no redirect.
+/googlecJOirbfsFuMeRRtCq3G9SyQtf0XY58iZV5zO4hc1dnY.html  /gsc-verify.txt  200
