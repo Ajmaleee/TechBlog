@@ -42,7 +42,6 @@ public/                 ← static assets served as-is (images, favicon, scripts
 scripts/validate-content.mjs  ← CI content checks (duplicate slugs, etc.)
 .github/workflows/ci.yml      ← validates + builds on every push/PR
 astro.config.mjs        ← site URL, integrations, markdown/remark config
-wrangler.toml            ← optional, only for CLI-based Cloudflare deploys
 ```
 
 ---
@@ -231,11 +230,9 @@ npm run build
 npx wrangler pages deploy dist --project-name=techblog
 ```
 
-`wrangler.toml` is included for this path but isn't required for the Git
-integration above. Because the build only depends on `npm run build`
-producing static files in `dist/`, the deployment target can be swapped
-later (e.g. to a Worker, or another static host) without touching the
-site's architecture.
+Because the build only depends on `npm run build` producing static files
+in `dist/`, the deployment target can be swapped later (e.g. to a Worker,
+or another static host) without touching the site's architecture.
 
 ---
 
