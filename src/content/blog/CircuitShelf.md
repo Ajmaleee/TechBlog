@@ -89,7 +89,7 @@ The website opens with two main options:
 
 ![CircuitShelf home screen with its main options](/images/blog/circuitshelf-web-app/home-screen.jpg)
 
-*Image: the initial screen. Upload your own screenshot as `home-screen.jpg`.*
+*CircuitShelf's home screen with the Parts and Add Part options.*
 
 The idea is to make the common actions easy to find. You shouldn't have to navigate through twelve different menus just to add a sensor or check whether a module is available.
 
@@ -117,7 +117,7 @@ If you want to access the same vault from multiple devices, you'll need to confi
 
 ![CircuitShelf sync settings and Sync Password option](/images/blog/circuitshelf-web-app/sync-settings.jpg)
 
-*Image: upload a screenshot of the menu containing the Sync Password option.*
+*The sync settings panel, with the Sync Password option.*
 
 Once the sync setup is complete, you can use the configured credentials on another device to access the corresponding synchronized inventory.
 
@@ -152,7 +152,7 @@ Depending on the available fields, this can include information such as:
 
 ![The Add Part form in CircuitShelf](/images/blog/circuitshelf-web-app/add-part.jpg)
 
-*Image: the Add Part form.*
+*The Add Part form for recording a new component.*
 
 Let's say you've bought an HC-SR04 ultrasonic sensor.
 
@@ -192,7 +192,7 @@ CircuitShelf lets me distinguish between three useful states:
 
 ![CircuitShelf inventory showing component condition and availability](/images/blog/circuitshelf-web-app/component-status.jpg)
 
-*Image: upload a screenshot showing the component status indicators.*
+*Component status and availability indicators in the inventory.*
 
 This distinction matters when planning a project.
 
@@ -216,7 +216,7 @@ CircuitShelf supports lending and receiving items, so I can keep track of which 
 
 ![CircuitShelf lending and receiving controls](/images/blog/circuitshelf-web-app/lending.jpg)
 
-*Image: upload a screenshot of the lending and receiving interface.*
+*The lending and receiving controls for tracking borrowed components.*
 
 This makes the inventory more useful than a simple list of component names.
 
@@ -232,7 +232,7 @@ CircuitShelf has a Settings section with several features that are worth explori
 
 ![CircuitShelf settings menu](/images/blog/circuitshelf-web-app/settings.jpg)
 
-*Image: upload a screenshot of the Settings screen.*
+*CircuitShelf's Settings screen.*
 
 ## Add multiple components
 
@@ -264,7 +264,7 @@ A PWA lets a website behave more like an installed application. Instead of openi
 
 ![CircuitShelf displayed as an installed web app](/images/blog/circuitshelf-web-app/pwa.jpg)
 
-*Image: show CircuitShelf installed on a phone or desktop.*
+*CircuitShelf running as an installed PWA.*
 
 This is particularly convenient on mobile.
 
@@ -282,7 +282,7 @@ When enabled, this is intended to require a password before opening the vault.
 
 ![Ask for Password on Open setting](/images/blog/circuitshelf-web-app/password-on-open.jpg)
 
-*Image: upload a screenshot of this setting.*
+*The Ask for Password on Open setting.*
 
 This is useful if you share your computer or phone with other people and don't want your inventory immediately accessible whenever they open the website.
 
@@ -300,7 +300,7 @@ The settings include different colour palettes that let you change the appearanc
 
 ![CircuitShelf colour palette settings](/images/blog/circuitshelf-web-app/themes.jpg)
 
-*Image: upload a screenshot showing the available palettes.*
+*Available colour palettes in the appearance settings.*
 
 One of my favourites is the black palette on the right.
 
@@ -331,7 +331,7 @@ CircuitShelf includes categories such as:
 
 ![CircuitShelf category management screen](/images/blog/circuitshelf-web-app/categories.jpg)
 
-*Image: upload a screenshot of the Categories section.*
+*The Categories section for organizing components.*
 
 You can also add categories to suit your own collection.
 
@@ -359,7 +359,7 @@ The application currently provides several currency options, allowing users to c
 
 ![CircuitShelf currency settings](/images/blog/circuitshelf-web-app/currency.jpg)
 
-*Image: upload a screenshot showing the currency selector.*
+*The currency selector in CircuitShelf.*
 
 This is useful when tracking component expenses because the displayed costs can match the currency you use when purchasing parts.
 
@@ -379,7 +379,7 @@ CircuitShelf includes backup and export options.
 
 ![CircuitShelf export and import controls](/images/blog/circuitshelf-web-app/backup-options.jpg)
 
-*Image: upload a screenshot of the backup and export controls.*
+*Backup, spreadsheet export, and import controls.*
 
 ## Export Backup
 
@@ -415,7 +415,7 @@ This option is intended to reset the vault data.
 
 ![Delete All Vaults option in CircuitShelf](/images/blog/circuitshelf-web-app/delete-vaults.jpg)
 
-*Image: upload a screenshot showing the Delete All Vaults option.*
+*The Delete All Vaults option at the bottom of the settings area.*
 
 This is useful if you want to start over, remove test data, or reset your inventory.
 
