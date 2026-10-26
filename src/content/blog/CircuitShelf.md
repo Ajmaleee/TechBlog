@@ -38,7 +38,7 @@ CircuitShelf is a web-based electronics inventory manager that lets me keep trac
 
 It's essentially the companion to my hardware project, except this one runs in a browser.
 
-![CircuitShelf dashboard showing the electronics inventory interface](/images/blog/circuitshelf-web-app/hero.jpg)
+![CircuitShelf dashboard showing the electronics inventory interface](/images/blog/circuitshelf-web-app/dashboard.jpg)
 
 *CircuitShelf — because remembering where I put every tiny electronic module is apparently too much to ask of my brain.*
 
@@ -412,10 +412,6 @@ Before importing, make sure you understand how the application handles existing 
 At the bottom of the settings area, you'll find **Delete All Vaults**.
 
 This option is intended to reset the vault data.
-
-![Delete All Vaults option in CircuitShelf](/images/blog/circuitshelf-web-app/delete-vaults.jpg)
-
-*The Delete All Vaults option at the bottom of the settings area.*
 
 This is useful if you want to start over, remove test data, or reset your inventory.
 
