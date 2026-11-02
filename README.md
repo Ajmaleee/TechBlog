@@ -1,28 +1,74 @@
 # Embedded & Circuits
 
-A personal engineering blog focused on Arduino, ESP32, electronics, sensors,
-and embedded systems — built as a fast static site with **Astro**, publishing
-straight from **Markdown → GitHub → Cloudflare Pages**.
+**Live site: [ajmaleeeblog.pages.dev](https://ajmaleeeblog.pages.dev)**
 
-```
-Markdown file → git push → GitHub Actions validation → Astro build → Cloudflare Pages
-```
+Embedded & Circuits is a personal engineering blog about building things with
+Arduino, ESP32, sensors, and whatever else is on the workbench. It covers
+wiring guides, project walkthroughs, firmware notes, and the parts of a build
+that do not go according to plan.
 
-No CMS, no database, no backend. Content lives as Markdown files in this
-repository and is the single source of truth.
+The site is written and maintained by **Ajmal Ali**, a self-taught electronics
+hobbyist. The goal is simple: document real projects clearly enough that
+someone else can follow along, including the mistakes.
+
+- [Read the latest articles](https://ajmaleeeblog.pages.dev/blog/)
+- [About the author](https://ajmaleeeblog.pages.dev/about/)
+- [RSS feed](https://ajmaleeeblog.pages.dev/rss.xml)
+- [Sitemap](https://ajmaleeeblog.pages.dev/sitemap-index.xml)
 
 ---
 
-## Why Astro
+## What is on the site
 
-Astro was chosen over Hugo/Eleventy for this project because it gives the
-best combination of: native Markdown **and** MDX support, built-in image
-optimization (`astro:assets`, automatic AVIF/WebP + responsive sizing),
-zero client-side JavaScript by default ("islands" only where needed — this
-site currently ships none as a framework runtime, only small vanilla
-scripts), first-class `@astrojs/sitemap` and `@astrojs/rss` integrations,
-Shiki syntax highlighting out of the box, and official Cloudflare Pages
-support.
+| Section | What you will find |
+| --- | --- |
+| **Projects** | Complete builds: disaster alert networks, greenhouse controllers, smart lockers, solar trackers, robotic arms, and more |
+| **ESP32** | Wi-Fi, Bluetooth, web dashboards, OTA updates, and ESP32-specific firmware notes |
+| **Arduino** | UNO and Nano projects, sensor interfacing, displays, relays, and core electronics |
+| **Sensors** | Practical guides for ultrasonic, temperature, gas, current, GPS, and vibration sensors |
+| **Debugging** | Fixes for hardware and firmware that only misbehave sometimes |
+| **Tooling** | Notes on the software and workflow around embedded development |
+
+Every article is written from a bench-testing perspective: what was connected,
+what code was uploaded, what went wrong, and how it was fixed.
+
+The site also includes:
+
+- Full-text search at `/search/`
+- Category and tag archive pages generated from article metadata
+- RSS feed and XML sitemap generated at build time
+- Light and dark themes
+- Reading-time estimates and copy buttons on code blocks
+- Responsive layouts and accessible navigation
+- A runtime image fallback so a missing image never leaves a broken icon
+- Optional Google AdSense and GA4 integration, with ads and analytics off in
+  local development
+
+---
+
+## How it is built
+
+This is a static site built with **Astro 5**. There is no CMS, database, or
+backend. Articles are Markdown files in the repository, and the publishing
+pipeline is:
+
+```
+Markdown file -> git push -> GitHub Actions validation -> Astro build -> Cloudflare Pages
+```
+
+- **Content:** Astro content collections with a Zod schema in
+  `src/content/config.ts`
+- **Rendering:** static HTML at build time, with small vanilla JavaScript
+  enhancements for search, theme switching, navigation, and code copying
+- **Styling:** one hand-written design system in `src/styles/global.css`
+- **Hosting:** Cloudflare Pages, deployed from the `main` branch
+- **CI:** GitHub Actions validates content and runs the production build on
+  every push and pull request
+- **Images:** root-relative files in `public/images/`, with `astro:assets`
+  available for optimized local images
+- **SEO:** canonical URLs, Open Graph, Twitter Cards, and JSON-LD structured
+  data generated per page
+- **Feeds:** RSS and sitemap generated from the canonical site URL
 
 ---
 
@@ -30,244 +76,249 @@ support.
 
 ```
 src/
+  components/           Header, Footer, SEO, PostCard, AdSlot, Analytics, consent UI
   content/
-    blog/            ← every article is one Markdown file here
-    config.ts         ← frontmatter schema (Zod) — build fails on bad metadata
-  components/          ← Header, Footer, SEO, PostCard, AdSlot, Analytics
-  layouts/              ← BaseLayout (shell), ArticleLayout (article chrome)
-  pages/                ← routes: /, /blog/, /blog/[slug]/, /about/, etc.
-  styles/global.css     ← the entire design system (tokens + rules)
-  utils/                ← posts.ts (queries/helpers), remark-callouts.mjs
-public/                 ← static assets served as-is (images, favicon, scripts)
-scripts/validate-content.mjs  ← CI content checks (duplicate slugs, etc.)
-.github/workflows/ci.yml      ← validates + builds on every push/PR
-astro.config.mjs        ← site URL, integrations, markdown/remark config
+    blog/               One Markdown file per article
+    config.ts           Frontmatter schema; bad metadata fails the build
+  layouts/              BaseLayout and ArticleLayout
+  pages/                Routes: /, /blog/, /blog/[slug]/, /about/, /search/, etc.
+  styles/global.css     The complete design system
+  utils/                Post queries, slug helpers, remark callouts
+public/
+  images/               Covers and inline images
+  scripts/              Small browser scripts (code copy, image fallback)
+scripts/
+  validate-content.mjs  Cross-file content checks used by CI
+.github/workflows/
+  ci.yml                Validate and build on push/PR
+astro.config.mjs        Site URL, integrations, Markdown plugins
 ```
+
+### Main routes
+
+| Route | Purpose |
+| --- | --- |
+| `/` | Home page with the lead story and latest articles |
+| `/blog/` | All published articles with pagination |
+| `/blog/[slug]/` | Individual article |
+| `/blog/category/[category]/` | Articles in a category |
+| `/blog/tag/[tag]/` | Articles with a tag |
+| `/search/` | Client-side search |
+| `/about/` | Author and site background |
+| `/contact/` | Contact information |
+| `/privacy/`, `/terms/` | Privacy policy and terms/disclaimer |
+| `/rss.xml` | RSS feed |
+| `/sitemap-index.xml` | XML sitemap |
+
+The production URL defaults to `https://ajmaleeeblog.pages.dev` in
+`astro.config.mjs`, so canonicals, feeds, and the sitemap remain correct even
+when `.env` is absent. Set `PUBLIC_SITE_URL` to override it for a custom
+domain.
 
 ---
 
 ## Local development
 
+Requirements: **Node.js 20+** and npm.
+
 ```bash
 npm install
-cp .env.example .env    # fill in PUBLIC_SITE_URL at minimum
+cp .env.example .env
 npm run dev
 ```
 
-Visit `http://localhost:4321`. Draft posts (`draft: true`) are visible in
-dev but excluded automatically from production builds.
+Open `http://localhost:4321`.
 
 ```bash
-npm run build      # type-checks + builds the static site into dist/
-npm run preview    # serves the built dist/ locally
+npm run build          # astro check + production build into dist/
+npm run preview        # serve the built site locally
+npm run validate:content
 ```
+
+Draft posts (`draft: true`) appear in development but are excluded from the
+production build, sitemap, and RSS feed.
 
 ---
 
-## Writing a new article
+## Writing an article
 
-1. Create a Markdown file in `src/content/blog/`, named for the URL you
-   want, e.g. `src/content/blog/interfacing-dht22-esp32.md` →
-   `/blog/interfacing-dht22-esp32/`. Use lowercase, hyphenated filenames —
-   the filename **is** the slug.
-2. Add frontmatter at the top of the file:
+1. Create a Markdown file in `src/content/blog/`.
+
+   The filename becomes the URL slug:
+
+   ```
+   src/content/blog/interfacing-hc-sr04-esp32.md
+   -> /blog/interfacing-hc-sr04-esp32/
+   ```
+
+   Use lowercase, hyphenated filenames.
+
+2. Add frontmatter:
 
    ```yaml
    ---
    title: "Interfacing an HC-SR04 Ultrasonic Sensor with ESP32"
-   description: "A practical guide to connecting and programming the HC-SR04 with an ESP32."
+   description: "A practical guide to wiring and programming the HC-SR04 with an ESP32."
    date: 2026-09-21
-   updated: 2026-09-21
-   author: "Ajmal Ali A"
-   category: "ESP32"
+   author: "Ajmal Ali"
+   category: "Sensors"
    tags:
      - ESP32
-     - Ultrasonic Sensor
+     - Ultrasonic
      - HC-SR04
    cover: "/images/hc-sr04-cover.jpg"
+   coverAlt: "HC-SR04 ultrasonic sensor connected to an ESP32"
    draft: false
    ---
    ```
 
-   Required fields: `title`, `description`, `date`, `category`, `tags`
-   (at least one), `cover`. See `src/content/config.ts` for the full
-   schema, defaults, and optional fields (`updated`, `canonicalUrl`,
-   `seoTitle`, `seoDescription`, `noindex`).
+   Required fields: `title`, `description`, `date`, `category`, `tags` (at
+   least one), and `cover`.
 
-3. Write the article in normal Markdown below the frontmatter.
-4. **Categories** are freeform — just type a new `category:` value and a
-   `/blog/category/<name>/` page is generated automatically.
-5. **Tags** work the same way — any tag creates a `/blog/tag/<tag>/` page.
-6. **Images**: put files in `public/images/`, reference them as
-   `/images/your-file.jpg` in frontmatter or Markdown. Use descriptive
-   filenames and always give inline images alt text:
-   `![HC-SR04 wiring diagram](/images/hc-sr04-wiring.jpg)`.
-7. **Callouts** — use these directly in Markdown, no HTML needed:
+   Optional fields: `updated`, `author`, `draft`, `canonicalUrl`, `seoTitle`,
+   `seoDescription`, `noindex`, and `coverAlt`. See
+   `src/content/config.ts` for the exact limits and defaults.
 
-   ```
-   :::note
-   This sensor operates at 5V.
-   :::
+3. Write the article in Markdown below the frontmatter.
 
-   :::tip
-   A logic-level converter also works instead of a resistor divider.
-   :::
+4. Categories and tags are freeform. A new `category:` or tag automatically
+   creates its archive page at build time.
 
-   :::warning
-   Do not connect this pin directly to 5V on a 3.3V-only MCU.
-   :::
+5. Run the checks before publishing:
+
+   ```bash
+   npm run validate:content
+   npm run build
    ```
 
-8. **Drafts** — set `draft: true` to keep a post out of production (it
-   stays visible at `npm run dev` so you can review it, and is excluded
-   from the sitemap/RSS/production build entirely).
-9. Run `npm run dev`, check the article renders correctly (headings,
-   code blocks, images, callouts), then run `npm run validate:content`
-   to catch duplicate slugs or missing cover images before pushing.
-10. `git add`, `git commit`, `git push` to `main`.
-11. GitHub Actions validates the content and build (see
-    `.github/workflows/ci.yml`); Cloudflare Pages then builds and deploys
-    automatically (see below). The article is live at its permanent URL
-    within a couple of minutes.
+6. Commit and push to `main`. GitHub Actions validates the content, and
+   Cloudflare Pages deploys the new build.
 
-You never hand-edit HTML for normal publishing.
+### Callouts
 
----
+The site supports three Markdown callout blocks:
 
-## How URLs are generated
+```markdown
+:::note
+This sensor operates at 5V.
+:::
 
-The Markdown filename becomes the slug: `src/content/blog/my-post.md` →
-`/blog/my-post/`. URLs are permanent — renaming a file changes its URL, so
-set `canonicalUrl` in frontmatter if you ever need to move content without
-breaking existing links.
+:::tip
+A logic-level converter also works instead of a resistor divider.
+:::
 
----
+:::warning
+Do not connect this pin directly to 5V on a 3.3V-only MCU.
+:::
+```
 
-## How SEO metadata works
+### Images
 
-`src/components/SEO.astro` generates, for every page: `<title>`, meta
-description, canonical URL, Open Graph tags, Twitter Card tags, and
-JSON-LD structured data (`WebSite`, `Person`, and — on articles —
-`BlogPosting` + `BreadcrumbList`). Articles get this automatically from
-frontmatter; override the on-page title/description for search purposes
-specifically with the optional `seoTitle` / `seoDescription` fields. Set
-`noindex: true` on a post to keep it out of search indexes without
-unpublishing it.
+Put images in `public/images/` and reference them with a root-relative path:
 
-`robots.txt` (`src/pages/robots.txt.ts`) and the sitemap
-(`@astrojs/sitemap`) are generated automatically at build time from
-`PUBLIC_SITE_URL` — there is no hardcoded domain anywhere in the codebase.
+```markdown
+![HC-SR04 wiring diagram](/images/hc-sr04-wiring.jpg)
+```
+
+Use descriptive filenames and always include alt text.
+
+If a cover or inline image is missing, content validation reports a warning and
+`public/scripts/image-fallback.js` replaces the broken image with an on-brand
+placeholder at runtime. Add the real file to `public/images/` to clear the
+warning.
 
 ---
 
-## Google Search Console
+## Configuration
 
-1. Set `PUBLIC_SITE_URL` to your real production domain.
-2. Deploy the site.
-3. In Search Console, add the property and verify via the HTML meta tag
-   method: set `PUBLIC_GSC_VERIFICATION` to the code Google gives you (in
-   Cloudflare Pages env vars, not committed to git if you'd rather keep it
-   private — though it isn't a secret).
-4. Submit `https://yourdomain.com/sitemap-index.xml` as your sitemap.
+Copy `.env.example` to `.env` for local work. In Cloudflare Pages, set the same
+values under **Settings -> Environment variables**.
 
----
+| Variable | Purpose |
+| --- | --- |
+| `PUBLIC_SITE_URL` | Canonical production URL. Defaults to `https://ajmaleeeblog.pages.dev` |
+| `PUBLIC_ADSENSE_CLIENT_ID` | AdSense publisher ID; blank disables ads |
+| `PUBLIC_ADSENSE_ENABLED` | Set to `false` to disable ads even when configured |
+| `PUBLIC_ADSENSE_SLOT_BELOW_INTRO` | Ad unit ID for the below-intro placement |
+| `PUBLIC_ADSENSE_SLOT_AFTER_ARTICLE` | Ad unit ID for the after-article placement |
+| `PUBLIC_CONSENT_ENABLED` | Set to `false` to omit the cookie consent notice |
+| `PUBLIC_GA_ID` | GA4 measurement ID; blank disables analytics |
+| `PUBLIC_GSC_VERIFICATION` | Optional Google Search Console verification token |
 
-## How AdSense configuration works
+Only `PUBLIC_`-prefixed values are exposed to the browser. Do not put API keys,
+tokens, or other real secrets in this repository or in `PUBLIC_` variables.
 
-Ads are fully off unless configured — nothing loads, nothing renders, and
-no ad script touches Core Web Vitals during development.
-
-- `PUBLIC_ADSENSE_CLIENT_ID` — your `ca-pub-XXXXXXXXXXXXXXXX` ID. Leave
-  blank to disable ads entirely.
-- `PUBLIC_ADSENSE_ENABLED=false` — force-disable ads even with a client ID
-  set (useful for a staging/preview environment).
-
-Placements are components, not manual Markdown insertions:
-`<AdSlot slot="..." placement="below-intro" />` and
-`<AdSlot slot="..." placement="after-article" />` are already wired into
-`ArticleLayout.astro`. Add a sidebar placement the same way if you build a
-desktop sidebar later. Never paste ad markup directly into an article.
+Ads and analytics have production defaults in code, so a normal deploy works
+without configuring them. Local development stays quiet unless the relevant
+values are set.
 
 ---
 
-## Analytics
+## Deployment
 
-Off by default. Set `PUBLIC_GA_ID` (a GA4 measurement ID) to enable Google
-Analytics via `src/components/Analytics.astro`. No script loads without it.
+Cloudflare Pages builds the site from this repository using its Git
+integration.
 
----
+- **Build command:** `npm run build`
+- **Output directory:** `dist`
+- **Node version:** 20
+- **Production branch:** `main`
 
-## Cloudflare deployment
+Every push to `main` triggers a production deployment. Pull requests and other
+branches can produce preview deployments automatically.
 
-**Recommended: Cloudflare's native Git integration.**
-
-1. Push this repository to GitHub.
-2. In the Cloudflare dashboard: **Workers & Pages → Create → Pages →
-   Connect to Git**, select this repo.
-3. Build settings:
-   - **Build command:** `npm run build`
-   - **Build output directory:** `dist`
-   - **Node version:** 20 (set `NODE_VERSION=20` in environment variables
-     if Cloudflare doesn't auto-detect it)
-4. Environment variables (Pages project → Settings → Environment
-   variables), set for **Production** and, if desired, differently for
-   **Preview**:
-   - `PUBLIC_SITE_URL`
-   - `PUBLIC_ADSENSE_CLIENT_ID` (optional)
-   - `PUBLIC_ADSENSE_ENABLED` (optional)
-   - `PUBLIC_GA_ID` (optional)
-   - `PUBLIC_GSC_VERIFICATION` (optional)
-5. Every push to `main` triggers a production deployment; every pull
-   request/branch gets its own preview deployment automatically.
-6. **Custom domain + HTTPS**: Pages project → Custom domains → add your
-   domain. Cloudflare provisions HTTPS automatically.
-
-**Alternative: CLI deploys via Wrangler** (if you'd rather not use the Git
-integration, or want to deploy from a different CI system):
+For a manual deploy:
 
 ```bash
 npm run build
 npx wrangler pages deploy dist --project-name=techblog
 ```
 
-Because the build only depends on `npm run build` producing static files
-in `dist/`, the deployment target can be swapped later (e.g. to a Worker,
-or another static host) without touching the site's architecture.
+To use a custom domain, add it in the Cloudflare Pages project settings.
+Cloudflare provisions HTTPS automatically.
+
+---
+
+## Content validation
+
+`npm run validate:content` checks the issues that the frontmatter schema cannot
+catch by itself:
+
+- duplicate slugs
+- empty or too-short article bodies
+- missing required cover fields
+- cover image files that do not exist in `public/`
+- drafts that will be excluded from production
+- internal links to articles that do not exist yet
+
+`npm run build` runs `astro check` before the Astro build, so TypeScript and
+template errors fail fast. The GitHub Actions workflow runs both commands on
+every push and pull request.
 
 ---
 
 ## Troubleshooting
 
-- **Build fails with a frontmatter error** — the error names the file and
-  field; check it against `src/content/config.ts`. Common causes: missing
-  `cover`, `description` too short, `tags` empty, invalid `date`.
-- **Article doesn't appear on the site** — check `draft: false` is set (or
-  the field is omitted, since `false` is the default) and that the file is
-  actually inside `src/content/blog/`.
-- **New category/tag page 404s locally after adding it** — restart
-  `npm run dev`; content collection changes sometimes need a dev-server
-  restart to pick up new static paths.
-- **Images look wrong / broken** — confirm the path starts with `/images/`
-  and the file actually exists in `public/images/`.
-- **Cloudflare build fails but local build works** — check the Node
-  version matches (`NODE_VERSION=20`) and that all required env vars are
-  set in the Cloudflare Pages project settings, since `.env` is not
-  committed to git.
+**Build fails with a frontmatter error**  
+The error names the file and field. Check it against
+`src/content/config.ts`. Common causes are a missing `cover`, an empty `tags`
+array, a description that is too short, or an invalid date.
 
----
+**An article does not appear on the site**  
+Confirm `draft: false` (or omit the field) and that the file is inside
+`src/content/blog/`.
 
-## Firmware code in articles
+**A new category or tag page returns 404 in development**  
+Restart `npm run dev`; new static paths are picked up on restart.
 
-Code samples default to **ESP32 Arduino core v3.x** — call this out
-explicitly in an article if a sketch relies on 2.x-only APIs, since a lot
-of older ESP32 tutorials online still target 2.x and the two aren't fully
-drop-in compatible (notably around `ledc`/PWM and some analog APIs).
+**An image is broken or shows a placeholder**  
+Confirm the path starts with `/images/` and the file exists in
+`public/images/`.
 
----
+**The Cloudflare build fails but the local build works**  
+Check that the Pages project uses Node 20 and that required environment
+variables are set. `.env` is not committed.
 
-## Roadmap (not built yet, architecture allows for it later)
-
-Project series/multi-part tutorials, an author page, a changelog,
-comments (e.g. via an external service), newsletter signup, and deeper
-search — none of these require restructuring the current
-Markdown → Astro → Cloudflare pipeline.
+**Canonical URLs or the sitemap point to the wrong domain**  
+Set `PUBLIC_SITE_URL` in the Cloudflare Pages environment variables and
+redeploy.
