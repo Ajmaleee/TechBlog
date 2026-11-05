@@ -11,15 +11,7 @@ interface Props {
 }
 const { bodyClass = "" } = Astro.props;
 
-// Site-wide integration IDs. All of these are public by design — they ship
-// in the page source — so they are hardcoded here as production defaults and
-// no longer depend on Cloudflare Pages injecting environment variables at
-// build time. `astro dev` stays clean (no analytics/ad tags); any PUBLIC_
-// variable still overrides the default, so a deploy can disable ads, etc.
 const isProd = import.meta.env.PROD;
-const adsenseClientId =
-  import.meta.env.PUBLIC_ADSENSE_CLIENT_ID || (isProd ? "ca-pub-7330488077866990" : "");
-const adsenseEnabled = Boolean(adsenseClientId) && import.meta.env.PUBLIC_ADSENSE_ENABLED !== "false";
 const gscVerification =
   import.meta.env.PUBLIC_GSC_VERIFICATION || (isProd ? "cJOirbfsFuMeRRtCq3G9SyQtf0XY58iZV5zO4hc1dnY" : "");
 ---
@@ -36,13 +28,6 @@ const gscVerification =
     )}
     <slot name="head" />
     <ConsentMode />
-    {adsenseEnabled && (
-      <script
-        async
-        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClientId}`}
-        crossorigin="anonymous"
-      ></script>
-    )}
     <Analytics />
   </head>
   <body class={bodyClass}>

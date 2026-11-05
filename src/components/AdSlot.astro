@@ -1,46 +1,45 @@
 ---
 // Controlled ad placement component. Authors never paste ad markup into
 // Markdown; every placement goes through this component, which stays a
-// no-op until PUBLIC_ADSENSE_CLIENT_ID is configured.
+// no-op until PUBLIC_ADSTERRA_ENABLED is configured.
 //
 // Required env (set in Cloudflare Pages project settings, not committed):
-//   PUBLIC_ADSENSE_CLIENT_ID            e.g. "ca-pub-XXXXXXXXXXXXXXXX"
-//   PUBLIC_ADSENSE_SLOT_BELOW_INTRO     ad unit id, or blank to skip
-//   PUBLIC_ADSENSE_SLOT_AFTER_ARTICLE   ad unit id, or blank to skip
+//   PUBLIC_ADSTERRA_ENABLED      "false" to disable ads entirely
 //
-// Per-slot IDs are passed as props so different placements can use
-// different AdSense ad units. The prop is named `adSlot`, not `slot`,
-// because `slot` is a reserved Astro directive — using it here would
-// route the component into a named <slot> outlet and silently drop it.
-//   <AdSlot adSlot="1234567890" placement="in-article" />
+// Defaults below are the Adsterra embed you provided. They ship in the page
+// source by design (Adsterra publisher/channel IDs are public), but you can
+// override any of them with PUBLIC_ variables in your deploy.
+//
+// Per-placement usage:
+//   <AdSlot placement="below-intro" />
+//   <AdSlot placement="after-article" />
 interface Props {
-  adSlot: string;
   placement?: "below-intro" | "in-article" | "after-article" | "sidebar";
-  format?: string;
 }
-const { adSlot, placement = "after-article", format = "auto" } = Astro.props;
+const { placement = "after-article" } = Astro.props;
 
-const clientId =
-  import.meta.env.PUBLIC_ADSENSE_CLIENT_ID ||
-  (import.meta.env.PROD ? "ca-pub-7330488077866990" : "");
-const enabled =
-  Boolean(clientId) &&
-  Boolean(adSlot) &&
-  import.meta.env.PUBLIC_ADSENSE_ENABLED !== "false";
+const enabled = import.meta.env.PUBLIC_ADSTERRA_ENABLED !== "false";
+
+// Adsterra embed (non-blocking, static banner — never covers article text).
+const scriptA =
+  import.meta.env.PUBLIC_ADSTERRA_SCRIPT_A ||
+  "https://abscloud.org/1/853d4092a34dbea36933ac7c98f7c207";
+const scriptB =
+  import.meta.env.PUBLIC_ADSTERRA_SCRIPT_B ||
+  "https://bauval.org/14/4b22c56307299d41158873e9fd0012b1";
+const scriptC =
+  import.meta.env.PUBLIC_ADSTERRA_SCRIPT_C ||
+  "https://bauval.org/21/5f176775a9b013d3e613fee01a66cf03";
+const containerId =
+  import.meta.env.PUBLIC_ADSTERRA_CONTAINER_ID ||
+  "container-5f176775a9b013d3e613fee01a66cf03";
 ---
 {enabled && (
   <div class={`ad-slot ad-slot--${placement}`} data-placement={placement}>
     <p class="ad-label">Advertisement</p>
-    <ins
-      class="adsbygoogle"
-      style="display:block"
-      data-ad-client={clientId}
-      data-ad-slot={adSlot}
-      data-ad-format={format}
-      data-full-width-responsive="true"
-    ></ins>
-    <script is:inline>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    <script data-cfasync="false" src={scriptA}></script>
+    <script data-cfasync="false" src={scriptB}></script>
+    <script async data-cfasync="false" src={scriptC}></script>
+    <div id={containerId}></div>
   </div>
 )}
