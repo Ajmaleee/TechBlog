@@ -37,9 +37,9 @@ const containerId =
 {enabled && (
   <div class={`ad-slot ad-slot--${placement}`} data-placement={placement}>
     <p class="ad-label">Advertisement</p>
+    <div id={containerId}></div>
     <script data-cfasync="false" src={scriptA}></script>
     <script data-cfasync="false" src={scriptB}></script>
-    <script async data-cfasync="false" src={scriptC}></script>
-    <div id={containerId}></div>
+    <script data-cfasync="false" src={scriptC}></script>
   </div>
 )}
