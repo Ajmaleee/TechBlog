@@ -28,8 +28,12 @@ const { category, posts } = Astro.props;
       <p>{posts.length} article{posts.length === 1 ? "" : "s"} filed under {category}.</p>
     </header>
     <div class="post-grid">
-      {posts.map((post) => <PostCard post={post} />)}
+      {posts.map((post, i) => (
+        <>
+          <PostCard post={post} />
+          {(i === 2 || i === 5 || i === 8) && <AdBanner containerId={`ad-banner-category-${i}`} />}
+        </>
+      ))}
     </div>
-    <AdBanner />
   </div>
 </BaseLayout>

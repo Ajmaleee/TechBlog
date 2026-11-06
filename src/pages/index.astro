@@ -41,9 +41,13 @@ const contactEmail = "ajmalsworkshop@gmail.com";
             <a href="/blog/">View all</a>
           </div>
           <div class="post-grid">
-            {moreStories.map((post) => <PostCard post={post} />)}
+            {moreStories.map((post, i) => (
+              <>
+                <PostCard post={post} />
+                {(i === 2 || i === 5 || i === 8) && <AdBanner containerId={`ad-banner-home-${i}`} />}
+              </>
+            ))}
           </div>
-          <AdBanner />
         </>
       )}
 

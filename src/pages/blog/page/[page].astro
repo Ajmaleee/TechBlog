@@ -34,9 +34,13 @@ const canonicalUrl = page.currentPage === 1 ? `${siteUrl}/blog/` : undefined;
     </header>
 
     <div class="post-grid">
-      {page.data.map((post) => <PostCard post={post} />)}
+      {page.data.map((post, i) => (
+        <>
+          <PostCard post={post} />
+          {(i === 2 || i === 5 || i === 8) && <AdBanner containerId={`ad-banner-page-${i}`} />}
+        </>
+      ))}
     </div>
-    <AdBanner />
 
     <nav class="pagination" aria-label="Pagination">
       {page.url.prev ? <a href={page.url.prev}>← Newer</a> : null}

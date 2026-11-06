@@ -635,11 +635,11 @@ code { font-family: var(--font-mono); }
 .ad-slot .ad-label { font-size: 0.6875rem; color: var(--color-text-faint); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--space-2); }
 
 /* ---------------------------------------------------------------------
-   Ad banner (4:1 native) — between cards on listing pages
+   Ad banner (native) — between cards on listing pages and in articles
 ----------------------------------------------------------------------- */
 .ad-banner { margin: var(--space-8) 0; text-align: center; display: block; }
 .ad-banner .ad-label { font-size: 0.6875rem; color: var(--color-text-faint); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--space-2); display: block; }
-.ad-banner--native { margin-left: auto; margin-right: auto; max-width: 336px; }
+.ad-banner--native { margin-left: auto; margin-right: auto; }
 
 /* ---------------------------------------------------------------------
    Cookie consent banner

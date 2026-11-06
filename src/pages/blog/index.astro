@@ -31,9 +31,13 @@ const tags = getAllTags(allPosts);
     </header>
 
     <div class="post-grid" id="post-list">
-      {posts.map((post) => <PostCard post={post} />)}
+      {posts.map((post, i) => (
+        <>
+          <PostCard post={post} />
+          {(i === 2 || i === 5 || i === 8) && <AdBanner containerId={`ad-banner-blog-${i}`} />}
+        </>
+      ))}
     </div>
-    <AdBanner />
 
     {hasMore && (
       <nav class="pagination" aria-label="Pagination">

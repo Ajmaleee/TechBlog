@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
 import SEO from "../components/SEO.astro";
-import AdSlot from "../components/AdSlot.astro";
+import AdBanner from "../components/AdBanner.astro";
 import PostCard from "../components/PostCard.astro";
 import { formatDate, readingTime, slugify, type Post } from "../utils/posts";
 
@@ -103,11 +103,13 @@ const contactEmail = "ajmalsworkshop@gmail.com";
         </details>
       )}
 
+      <AdBanner containerId="ad-article-above-body" />
+
       <div class="article-body">
         <slot />
       </div>
 
-      <AdSlot />
+      <AdBanner containerId="ad-article-below-body" />
 
       <div class="author-box">
         <div class="author-box__avatar" aria-hidden="true">A</div>
@@ -120,6 +122,8 @@ const contactEmail = "ajmalsworkshop@gmail.com";
           </p>
         </div>
       </div>
+
+      <AdBanner containerId="ad-article-before-related" />
 
       {related.length > 0 && (
         <section aria-labelledby="related-heading">
