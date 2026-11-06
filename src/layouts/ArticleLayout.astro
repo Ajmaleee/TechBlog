@@ -19,7 +19,6 @@ const path = `/blog/${post.slug}/`;
 const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 const coverSrc = data.cover;
 const contactEmail = "ajmalsworkshop@gmail.com";
-const ADSTERRA_ENABLED = import.meta.env.PUBLIC_ADSTERRA_ENABLED !== "false";
 ---
 <BaseLayout>
   <SEO
@@ -104,13 +103,11 @@ const ADSTERRA_ENABLED = import.meta.env.PUBLIC_ADSTERRA_ENABLED !== "false";
         </details>
       )}
 
-      {ADSTERRA_ENABLED && <AdSlot placement="below-intro" />}
-
       <div class="article-body">
         <slot />
       </div>
 
-      {ADSTERRA_ENABLED && <AdSlot placement="after-article" />}
+      <AdSlot />
 
       <div class="author-box">
         <div class="author-box__avatar" aria-hidden="true">A</div>
