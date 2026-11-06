@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SEO from "../components/SEO.astro";
 import PostCard from "../components/PostCard.astro";
+import AdBanner from "../components/AdBanner.astro";
 import { getPublishedPosts, getAllCategories, getAllTags, slugify } from "../utils/posts";
 
 const posts = await getPublishedPosts();
@@ -42,6 +43,7 @@ const contactEmail = "ajmalsworkshop@gmail.com";
           <div class="post-grid">
             {moreStories.map((post) => <PostCard post={post} />)}
           </div>
+          <AdBanner />
         </>
       )}
 
